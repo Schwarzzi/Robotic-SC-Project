@@ -174,9 +174,9 @@ class OrbitProperties():
         t (float): Time in seconds.
     """
 
-    __slots__ = ['h', 'beta', 't', '_period', '_beta_critical']
+    __slots__ = ['_h', '_beta', '_period', '_beta_critical', '_albedo', '_earth_ir']
 
-    def __init__(self, altitude, beta, t) -> None:
+    def __init__(self, altitude, beta) -> None:
         """
         Initialize the OrbitProperties class.
 
@@ -185,12 +185,54 @@ class OrbitProperties():
             beta (float): Angle between orbit and equator in degrees.
             t (float): Time in seconds.
         """
-        self.beta = beta
-        self.h = altitude
-        self.t = t
-        self._period = None  # Cached value of the orbital period
-        self._beta_critical = None  # Cached value of beta critical
+        self._h = altitude
+        self._beta = beta
+        self._period = None
+        self._beta_critical = None
+        self._albedo = self.albedo()
+        self._earth_ir = self.earth_ir()
 
+    @property
+    def h(self):
+        """
+        Gets the altitude.
+
+        Returns:
+            float: Altitude in km.
+        """
+        return self._h
+
+    @h.setter
+    def h(self, value):
+        """
+        Sets the altitude and invalidates the cached period value.
+
+        Parameters:
+            value (float): Altitude in km.
+        """
+        self._h = value
+        self._period = None  # Invalidate the cached period value
+
+    @property
+    def beta(self):
+        """
+        Gets the beta angle.
+
+        Returns:
+            float: Beta angle in degrees.
+        """
+        return self._beta
+
+    @beta.setter
+    def beta(self, value):
+        """
+        Sets the beta angle and invalidates the cached values that depend on it.
+
+        Parameters:
+            value (float): Beta angle in degrees.
+        """
+        self._beta = value
+        self._beta_critical = None  # Invalidate the cached beta critical value
 
     def period(self):
         """
@@ -200,7 +242,9 @@ class OrbitProperties():
             float: Orbital period in seconds.
         """
         if self._period is None:
-            self._period = 2 * np.pi * np.sqrt(self.h**3 / C.mu)
+            a = (C.r_earth + self.h) * 1000 # Convert altitude to meters
+            self._period = 2 * np.pi * np.sqrt(a**3 / C.mu)
+        print(self._period)
         return self._period
     
     def beta_critical(self):
@@ -221,54 +265,72 @@ class OrbitProperties():
         Returns:
             float: Fraction of orbit in eclipse.
         """
+        if self._beta_critical is None:
+            self.beta_critical()  # Ensure that beta_critical is calculated
+
         beta_rad = np.deg2rad(self.beta)
-        if np.abs(beta_rad) < self.beta_critical():
+        if np.abs(beta_rad) < self._beta_critical:
             term = np.sqrt((self.h**2 + 2 * C.r_earth * self.h)) / ((C.r_earth + self.h) * np.cos(beta_rad))
             f_e = 1 / np.pi * np.arccos(term)
         else:
             f_e = 0
         return f_e
     
-    def eclipse(self):
+    def eclipse(self, t):
         """
         Check if the satellite is in eclipse.
 
         Returns:
             bool: True if in eclipse, False if not.
         """
-        t_eclipse = np.mod(self.t, self.period()) 
-        eclipse_start = self.period() / 2 * (1 - self.eclipse_fraction())
-        eclipse_end = self.period() / 2 * (1 + self.eclipse_fraction())
+        if self._period is None:
+            self.period()  # Ensure that period is calculated
+
+        t_eclipse = np.mod(t, self._period)
+        eclipse_start = self._period / 2 * (1 - self.eclipse_fraction())
+        eclipse_end = self._period / 2 * (1 + self.eclipse_fraction())
         return eclipse_start < t_eclipse < eclipse_end
     
-    def view_factor(self, gamma, r):
+    def view_factor(self, gammas, r_values):
         """
         Calculate the view factor between satellite and earth/sun.
 
-        Args:
+        Parameters:
             gamma (float): Angle between satellite and earth/sun in degrees.
-            r (float): Distance between satellite and earth/sun.
+            r_values (float): Radius of earth/sun in km.
 
         Returns:
             float: View factor between satellite and earth/sun.
         """
-        gamma_rad = np.deg2rad(gamma)
-        r_sc = r + self.h
-        H = r_sc / r
+        r_values = np.array([C.r_earth if body == 'earth' else C.r_sun if body == 'sun' else np.nan for body in r_values])
+
+        # Calculate additional variables needed for view factor calculation
+        gamma_rads = np.deg2rad(gammas)
+        r_sc = r_values + self.h
+        H = r_sc / r_values
         phi_m = np.arcsin(1 / H)
         b = np.sqrt(H ** 2 - 1)
 
-        if gamma_rad <= (np.pi / 2 - phi_m):
-            F = np.cos(gamma_rad) / H ** 2
-        
-        elif gamma_rad > (np.pi / 2 -phi_m) and gamma_rad <= (np.pi / 2 + phi_m):
-            t1 = 1/2 * np.arcsin(b/(H * np.sin(gamma_rad)))
-            t2 = 1 / (2 * H ** 2) * (np.cos(gamma_rad) * np.arccos(-b * np.arctan(gamma_rad)) -b * np.sqrt(1 - H ** 2 * (np.cos(gamma_rad))**2))
-            F = 2 / np.pi * (np.pi / 4 - t1 + t2)
-        else:
-            F = 0
+        # Initialize view factor array
+        view_factors = np.zeros_like(gamma_rads)
 
-        return F
+        # Compute view factors for each node
+        for i, gamma_rad in enumerate(gamma_rads):
+            if np.isnan(gamma_rad) or np.isnan(H[i]) or np.isnan(b[i]):
+                view_factors[i] = 0  # Set view factor to 0 for invalid inputs
+                continue
+
+            # Check the range of gamma and calculate the view factor accordingly
+            if gamma_rad <= (np.pi / 2 - phi_m[i]):
+                view_factors[i] = np.cos(gamma_rad) / H[i] ** 2
+            elif (np.pi / 2 - phi_m[i]) < gamma_rad <= (np.pi / 2 + phi_m[i]):
+                t1 = 1/2 * np.arcsin(b[i] / (H[i] * np.sin(gamma_rad)))
+                t2 = 1 / (2 * H[i] ** 2) * (np.cos(gamma_rad) * np.arccos(-b[i] / np.tan(gamma_rad)) - b[i] * np.sqrt(1 - H[i] ** 2 * np.cos(gamma_rad) ** 2))
+                view_factors[i] = 2 / np.pi * (np.pi / 4 - t1 + t2)
+            else:
+                view_factors[i] = 0  # Set view factor to 0 for angles outside the specified range
+
+        return view_factors
     
     def albedo(self):
         """
@@ -308,21 +370,68 @@ class ExternalHeatFlux:
         total_flux(self): Calculates the total external heat flux on the node.
     """
 
-    __slots__ = ['n', 'op', '_eclipse_cache']
+    __slots__ = ['nodes', 'op', '_t', '_eclipse_cache', '_albedo', '_earth_ir', 'areas', 'absorptivities', 'radiating_bodies', 'gammas']
 
-    def __init__(self, Node, h, beta, t) -> None:
+    def __init__(self, nodes, h, beta, t) -> None:
         """
         Initializes an instance of the ExternalHeatFlux class.
 
-        Args:
-            Node: The node on which the external heat flux is applied.
-            h: The altitude of the node.
-            beta: The angle between the node's normal vector and the sun vector.
-            t: The time at which the external heat flux is calculated.
+        Parameters:
+            Nodes (dict): The node on which the external heat flux is applied.
+            h (float): The altitude of the node.
+            beta (float): The angle between the node's normal vector and the sun vector.
+            t (float): The time at which the external heat flux is calculated.
         """
-        self.n = Node
-        self.op = OrbitProperties(h, beta, t)
-        self._eclipse_cache = None  # Cache for eclipse status
+        self.nodes = nodes
+        self.op = OrbitProperties(h, beta)
+        self._t = t
+        self._eclipse_cache = self.calculate_eclipse_status()  # Cache for eclipse status
+
+        self._albedo = self.op.albedo()
+        self._earth_ir = self.op.earth_ir()
+        # Precompute node properties
+        self.areas = np.array([node.area for node in self.nodes.values()])
+        self.absorptivities = np.array([node.absorptivity for node in self.nodes.values()])
+        self.radiating_bodies = np.array([node.radiating_body for node in self.nodes.values()])
+        self.gammas = np.array([node.gamma for node in self.nodes.values()])
+
+    @property
+    def t(self):
+        """
+        Gets the current time value.
+        """
+        return self._t
+
+    @t.setter
+    def t(self, value):
+        """
+        Sets the time value and updates the eclipse status.
+
+        Parameters:
+            value (float): The new time value.
+        """
+        self._t = value
+        self._eclipse_cache = self.calculate_eclipse_status()
+
+    def update_altitude(self, new_altitude):
+        """
+        Update the altitude in the OrbitProperties instance.
+
+        Args:
+            new_altitude (float): The new altitude value.
+        """
+        self.op.h = new_altitude  # Update altitude in OrbitProperties
+        self._eclipse_cache = None  # Invalidate eclipse cache
+    
+    def update_beta_angle(self, new_beta_angle):
+        """
+        Update the beta angle in the OrbitProperties instance.
+
+        Args:
+            new_beta_angle (float): The new beta angle value.
+        """
+        self.op.beta = new_beta_angle  # Update beta angle in OrbitProperties
+        self._eclipse_cache = None  # Invalidate eclipse cache
 
     def vf_node(self):
         """
@@ -344,13 +453,15 @@ class ExternalHeatFlux:
         gamma = self.n.gamma
         return self.op.view_factor(gamma, r)
     
-    def _calculate_eclipse(self):
+    def calculate_eclipse_status(self):
         """
-        Calculates and caches the eclipse status.
+        Calculates the eclipse status for all nodes.
+
+        Returns:
+            numpy.ndarray: Array of eclipse status (True/False) for each node.
         """
-        if self._eclipse_cache is None:
-            self._eclipse_cache = self.op.eclipse()
-        return self._eclipse_cache
+        # Calculate eclipse status based on the time 't' for all nodes
+        return np.array([self.op.eclipse(self.t) for node in self.nodes.values()])
 
     def solar_flux(self):
         """
@@ -359,9 +470,12 @@ class ExternalHeatFlux:
         Returns:
             The solar flux on the node.
         """
-        if self._calculate_eclipse():
-            return 0
-        return self.vf_node() * self.n.area * C.q_sun * self.n.absorptivity
+
+        if self._eclipse_cache is None:
+            self._eclipse_cache = self.calculate_eclipse_status()
+
+        vf = self.op.view_factor(self.gammas, self.radiating_bodies)
+        return np.where(~self._eclipse_cache, vf * self.areas * C.q_sun * self.absorptivities, 0)
 
     def albedo_flux(self):
         """
@@ -370,9 +484,7 @@ class ExternalHeatFlux:
         Returns:
             The earth albedo flux on the node.
         """
-        if self._calculate_eclipse():
-            return 0
-        return self.op.albedo() * self.n.area * C.q_sun * self.n.absorptivity
+        return np.where(~self._eclipse_cache, self._albedo * self.areas * C.q_sun * self.absorptivities, 0)
 
     def earth_flux(self):
         """
@@ -381,18 +493,19 @@ class ExternalHeatFlux:
         Returns:
             The earth IR flux on the node.
         """
-        return self.op.earth_ir() * self.n.area
+        return self._earth_ir * self.areas
 
     def total_flux(self):
         """
-        Calculates the total external heat flux on the node.
+        Calculates the total external heat flux on each node.
 
         Returns:
-            The total external heat flux on the node.
+            np.ndarray: Array of total external heat flux for each node.
         """
-        if self._calculate_eclipse():
-            return self.earth_flux()
-        return self.solar_flux() + self.albedo_flux() + self.earth_flux()
+        solar_flux = self.solar_flux()
+        albedo_flux = self.albedo_flux()
+        earth_flux = self.earth_flux()
+        return solar_flux + albedo_flux + earth_flux
     
 
 class ThermalModel:
@@ -556,6 +669,29 @@ class ThermalModel:
 
         return result / A_i
     
+    def is_occluded(self, index_i, index_j, positions):
+        """
+        Check if any node occludes the view between two nodes.
+
+        Parameters:
+            index_i (int): Index of the first node.
+            index_j (int): Index of the second node.
+            positions (numpy.ndarray): Array of node positions.
+
+        Returns:
+            bool: True if the view is occluded, False otherwise.
+        """
+        position_i = positions[index_i]
+        position_j = positions[index_j]
+
+        for k, position_k in enumerate(positions):
+            if k != index_i and k != index_j:
+                # Simple occlusion check along straight lines (x, y, z axes)
+                if all(position_i <= position_k) and all(position_k <= position_j):
+                    return True  # Node k occludes the view between node i and j
+
+        return False
+    
     def internal_vf(self):
         """
         Calculate the view factor matrix between different nodes.
@@ -578,6 +714,11 @@ class ThermalModel:
                 if i != j:
                     normal_j = normal_vectors[j]
                     position_j = positions[j]
+
+                    # Check if any node is occluding the view between node_i and node_j
+                    if self.is_occluded(i, j, positions):
+                        vf_matrix[i][j] = 0
+                        continue
 
                     R_ij = position_i - position_j
                     R_ij_norm = np.linalg.norm(R_ij)
@@ -647,46 +788,38 @@ class ThermalModel:
                     temperature_difference = self.nodes[neighbor_key].temperature - node_i.temperature
                     q_internal[i] += k_matrix[i][j] * temperature_difference * contact_area
 
+        # Unpack node properties into arrays
+        temperatures = np.array([node.temperature for node in self.nodes.values()])
+        emissivities = np.array([node.emissivity for node in self.nodes.values()])
+        areas = np.array([node.area for node in self.nodes.values()])
+        radiating_bodies = np.array([node.radiating_body for node in self.nodes.values()])
+        thermal_masses = np.array([node.thermal_mass for node in self.nodes.values()])
+        heat_flux_ints = np.array([node.heat_flux_int for node in self.nodes.values()])
+
         # Calculate the internal radiated heat flux
-        q_internal_radiated = np.zeros(node_count)
-        for i in range(node_count):
-            for j in range(node_count):
-                node_i = list(self.nodes.values())[i]
-                node_j = list(self.nodes.values())[j]
-                q_internal_radiated[i] += node_i.emissivity * C.sigma * (node_i.temperature ** 4 - node_j.temperature ** 4) * node_i.area * self.vf_matrix[i][j]
+        temp_diff = temperatures[:, np.newaxis] ** 4 - temperatures[np.newaxis, :] ** 4
+        q_internal_radiated = np.sum(emissivities[:, np.newaxis] * C.sigma * temp_diff * areas[:, np.newaxis] * self.vf_matrix, axis=1)
 
         # Calculate the externally radiated heat flux
-        q_radiated = np.zeros(node_count)
-        for i, node_i in enumerate(self.nodes.values()):
-            if node_i.radiating_body in ['earth', 'sun']:
-                q_radiated[i] = node_i.emissivity * C.sigma * node_i.area * (node_i.temperature ** 4 - C.T_space ** 4)
-            else:
-                q_radiated[i] = 0
+        radiating_bodies = np.array([node.radiating_body for node in self.nodes.values()])
+        is_radiating = np.isin(radiating_bodies, ['earth', 'sun'])
+        q_radiated = np.where(is_radiating, emissivities * C.sigma * areas * (temperatures ** 4 - C.T_space ** 4), 0)
 
         # Calculate the heat flux generated by electronic components
         q_generated = np.array([node.heat_flux_int for node in self.nodes.values()])
 
-        q_total = q_internal + q_generated + q_internal_radiated - q_radiated # This has a bug, q_generated is lumped and increases the temperature of the component node significantly
-        for i, node_i in enumerate(self.nodes.values()):
-            q_total[i] += ExternalHeatFlux(node_i, h, beta, t).total_flux()
+        external_heat_flux = ExternalHeatFlux(self.nodes, h, beta, t).total_flux()
 
-        # Calculate the rate of change of temperature for each node
-        
+        q_total = q_internal + q_generated + q_internal_radiated - q_radiated + external_heat_flux
+
+        # Calculate the rate of change of temperature for each node with thermal control for electronic components
         if thermal_control:
-            # Calculate the rate of change of temperature for each node with thermal control for electronic components
-            dT_dt = np.zeros(node_count)  # Initialize with zeros
-            for i, node in enumerate(self.nodes.values()):
-                if node.heat_flux_int == 0:
-                    # For non-electronic components, calculate the rate of change of temperature
-                    dT_dt[i] = q_total[i] / node.thermal_mass
-                else:
-                    # For electronic components, set the rate of change of temperature to zero
-                    dT_dt[i] = 0
-
+            # Set rate of change to zero for electronic components (where heat_flux_int is not zero)
+            dT_dt = np.where(heat_flux_ints == 0, q_total / thermal_masses, 0)
         else:
-            # Calculate the rate of change of temperature for each node without thermal control for electronic components
-             dT_dt = np.array([q_total[i] / node.thermal_mass for i, node in enumerate(self.nodes.values())])
-        
+            # Compute rate of change for all nodes without considering electronic component status
+            dT_dt = q_total / thermal_masses
+
         return dT_dt
 
     @staticmethod
@@ -764,7 +897,7 @@ class ThermalModel:
 
         with Pool() as pool:
             with tqdm(total=len(all_args), desc="Integrating Heat Balance") as pbar:
-                for index, result in enumerate(pool.imap(ThermalModel.integrate_one_scenario, all_args)):
+                for index, result in enumerate(pool.imap_unordered(ThermalModel.integrate_one_scenario, all_args)):
                     i = index // (len(h_range) * len(time_range))
                     k = (index // len(time_range)) % len(h_range)
                     j = index % len(time_range)
