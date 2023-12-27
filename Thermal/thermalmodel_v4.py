@@ -41,7 +41,7 @@ class Node:
         """ 
         Initializes a new instance of the Node class.
 
-        Args:
+        Parameters:
             key (int): Unique identifier for the node.
             area: Incident area.
             conductivity: Thermal conductivity.
@@ -90,7 +90,7 @@ class Node:
         """
         Changes the name of the node.
 
-        Args:
+        Parameters:
             name: Name of the node.
 
         Returns:
@@ -122,7 +122,7 @@ class Node:
         """
         Adds a neighbor to the node.
 
-        Args:
+        Parameters:
             node: The neighbor node to be added.
             contact_area: Contact area between the node and the neighbor.
         """
@@ -138,7 +138,7 @@ class Node:
         """
         Removes a neighbor from the node.
 
-        Args:
+        Parameters:
             key: The key of the neighbor node to be removed.
         """
         if key in self.neighbors:
@@ -157,8 +157,8 @@ class Node:
         """
         Updates the temperature of the node.
 
-        Args:
-            temperature: The new temperature value.
+        Parameters:
+            temperature (float): The new temperature value.
         """
         if self.heat_flux_int == 0:  # Update temperature only if it's not an electronic component
                 self.temperature = temperature
@@ -174,7 +174,7 @@ class OrbitProperties():
         t (float): Time in seconds.
     """
 
-    __slots__ = ['_h', '_beta', '_period', '_beta_critical', '_albedo', '_earth_ir']
+    __slots__ = ['_h', '_beta', '_period_cache', '_beta_critical_cache', '_albedo', '_earth_ir']
 
     def __init__(self, altitude, beta) -> None:
         """
@@ -187,8 +187,8 @@ class OrbitProperties():
         """
         self._h = altitude
         self._beta = beta
-        self._period = None
-        self._beta_critical = None
+        self._period_cache = {}
+        self._beta_critical_cache = {}
         self._albedo = self.albedo()
         self._earth_ir = self.earth_ir()
 
@@ -211,7 +211,8 @@ class OrbitProperties():
             value (float): Altitude in km.
         """
         self._h = value
-        self._period = None  # Invalidate the cached period value
+        self._period_cache = {}
+        self._beta_critical_cache = {}
 
     @property
     def beta(self):
@@ -232,7 +233,7 @@ class OrbitProperties():
             value (float): Beta angle in degrees.
         """
         self._beta = value
-        self._beta_critical = None  # Invalidate the cached beta critical value
+        self._beta_critical_cache = None  # Invalidate the cached beta critical value
 
     def period(self):
         """
@@ -241,11 +242,11 @@ class OrbitProperties():
         Returns:
             float: Orbital period in seconds.
         """
-        if self._period is None:
+
+        if self._h not in self._period_cache:
             a = (C.r_earth + self.h) * 1000 # Convert altitude to meters
-            self._period = 2 * np.pi * np.sqrt(a**3 / C.mu)
-        print(self._period)
-        return self._period
+            self._period_cache[self._h] = 2 * np.pi * np.sqrt(a**3 / C.mu)
+        return self._period_cache[self._h]
     
     def beta_critical(self):
         """
@@ -254,9 +255,9 @@ class OrbitProperties():
         Returns:
             float: Angle in radians.
         """
-        if self._beta_critical is None:
-            self._beta_critical = np.arcsin(C.r_earth / (C.r_earth + self.h))
-        return self._beta_critical
+        if self._h not in self._beta_critical_cache:
+            self._beta_critical_cache[self._h] = np.arcsin(C.r_earth / (C.r_earth + self._h))
+        return self._beta_critical_cache[self._h]
     
     def eclipse_fraction(self):
         """
@@ -265,11 +266,11 @@ class OrbitProperties():
         Returns:
             float: Fraction of orbit in eclipse.
         """
-        if self._beta_critical is None:
+        if self._h not in self._beta_critical_cache:
             self.beta_critical()  # Ensure that beta_critical is calculated
 
         beta_rad = np.deg2rad(self.beta)
-        if np.abs(beta_rad) < self._beta_critical:
+        if np.abs(beta_rad) < self._beta_critical_cache[self._h] :
             term = np.sqrt((self.h**2 + 2 * C.r_earth * self.h)) / ((C.r_earth + self.h) * np.cos(beta_rad))
             f_e = 1 / np.pi * np.arccos(term)
         else:
@@ -280,15 +281,18 @@ class OrbitProperties():
         """
         Check if the satellite is in eclipse.
 
+        Parameters:
+            t (float): Time in seconds.
+
         Returns:
             bool: True if in eclipse, False if not.
         """
-        if self._period is None:
+        if self._h not in self._period_cache:
             self.period()  # Ensure that period is calculated
 
-        t_eclipse = np.mod(t, self._period)
-        eclipse_start = self._period / 2 * (1 - self.eclipse_fraction())
-        eclipse_end = self._period / 2 * (1 + self.eclipse_fraction())
+        t_eclipse = np.mod(t, self._period_cache[self._h])
+        eclipse_start = self._period_cache[self._h]  / 2 * (1 - self.eclipse_fraction())
+        eclipse_end = self._period_cache[self._h]  / 2 * (1 + self.eclipse_fraction())
         return eclipse_start < t_eclipse < eclipse_end
     
     def view_factor(self, gammas, r_values):
@@ -377,7 +381,7 @@ class ExternalHeatFlux:
         Initializes an instance of the ExternalHeatFlux class.
 
         Parameters:
-            Nodes (dict): The node on which the external heat flux is applied.
+            nodes (dict): The node on which the external heat flux is applied.
             h (float): The altitude of the node.
             beta (float): The angle between the node's normal vector and the sun vector.
             t (float): The time at which the external heat flux is calculated.
@@ -417,7 +421,7 @@ class ExternalHeatFlux:
         """
         Update the altitude in the OrbitProperties instance.
 
-        Args:
+        Parameters:
             new_altitude (float): The new altitude value.
         """
         self.op.h = new_altitude  # Update altitude in OrbitProperties
@@ -427,7 +431,7 @@ class ExternalHeatFlux:
         """
         Update the beta angle in the OrbitProperties instance.
 
-        Args:
+        Parameters:
             new_beta_angle (float): The new beta angle value.
         """
         self.op.beta = new_beta_angle  # Update beta angle in OrbitProperties

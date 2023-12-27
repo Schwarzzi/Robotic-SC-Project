@@ -12,9 +12,9 @@ def main():
     nodes = construct_nodes()
     tm = ThermalModel(nodes)
 
-    beta_range = np.linspace(0, 90, 2)
-    h_range = np.linspace(200, 2000, 1)
-    time_range = np.linspace(0, 50000, 100)
+    beta_range = np.linspace(0, 90, 30)
+    h_range = np.linspace(200, 2000, 20)
+    time_range = np.linspace(0, 30000, 1000)
 
     plot_3d(tm, beta_range, h_range, time_range)
 
