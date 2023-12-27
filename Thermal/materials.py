@@ -1,8 +1,13 @@
+"""
+A module that contains constructors for materials and components.
+"""
+
+
 class Material:
     """
     Represents a material with its properties.
     
-    Args:
+    Parameters:
         name (str): The name of the material.
         conductivity (float): The thermal conductivity of the material.
         specific_heat (float): The specific heat capacity of the material.
@@ -20,7 +25,7 @@ class Component(Material):
     """
     Represents a component with its properties.
     
-    Args:
+    Parameters:
         name (str): The name of the component.
         power (float): The power of the component.
         material (Material): The material of the component.

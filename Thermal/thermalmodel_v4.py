@@ -1,11 +1,13 @@
+"""
+A module for the thermal model.
+"""
+
+from multiprocessing import Pool
 import numpy as np
 from scipy.integrate import solve_ivp, dblquad
 from constants import Constants as C
 from materials import Component
 from tqdm import tqdm
-from functools import lru_cache
-from multiprocessing import Pool
-
 
 class Node:
     """
@@ -43,14 +45,14 @@ class Node:
 
         Parameters:
             key (int): Unique identifier for the node.
-            area: Incident area.
-            conductivity: Thermal conductivity.
-            mass: Mass of the node.
-            cp: Specific heat capacity.
-            emissivity: Emissivity.
-            absorptivity: Absorptivity.
-            temperature: Temperature.
-            gamma: Angle between the node and the sun/earth.
+            area (float): Incident area. m^2
+            conductivity (float): Thermal conductivity. W/mK
+            mass (float): Mass of the node. kg
+            cp (float): Specific heat capacity. J/kgK
+            emissivity (float): Emissivity.
+            absorptivity (float): Absorptivity. 
+            temperature (float): Temperature. K
+            gamma (float): Angle between the node and the sun/earth. degrees
             rb (str): Radiating body (earth or sun).
             position (list): Position of the center of the node from the geometric center of the S/C in meters 
                              and angle between the normal vector of the node face and the origin in degrees 
@@ -73,7 +75,6 @@ class Node:
         self.name = name
         if isinstance(material, Component):
             self.heat_flux_int = material.power * material.efficiency # if node is electronic component, heat flux in W
-       
         self._thermal_mass = self._mass * self._cp
 
     @property
@@ -91,7 +92,7 @@ class Node:
         Changes the name of the node.
 
         Parameters:
-            name: Name of the node.
+            name (str): Name of the node.
 
         Returns:
             str: The name of the node.
@@ -118,13 +119,13 @@ class Node:
         neighbor_ids = list(self.neighbors.keys())
         return f"Node {self.key} with neighbors: {', '.join(map(str, neighbor_ids))}"
 
-    def add_neighbor(self, node, contact_area, is_reciprocal=False):
+    def add_neighbor(self, node, contact_area):
         """
         Adds a neighbor to the node.
 
         Parameters:
-            node: The neighbor node to be added.
-            contact_area: Contact area between the node and the neighbor.
+            node (Node): The neighbor node to be added.
+            contact_area (float): Contact area between the node and the neighbor. m^2
         """
         # check if neighbor already exists
         if node.key not in self.neighbors:
@@ -133,13 +134,13 @@ class Node:
         # Add this node as a neighbor to the added neighbor, if not already present
         if self.key not in node.neighbors:
             node.neighbors[self.key] = (self, contact_area)
-        
+   
     def remove_neighbor(self, key):
         """
         Removes a neighbor from the node.
 
         Parameters:
-            key: The key of the neighbor node to be removed.
+            key (int): The key of the neighbor node to be removed.
         """
         if key in self.neighbors:
             del self.neighbors[key]
@@ -152,7 +153,7 @@ class Node:
             iterator: An iterator over the set of neighbors.
         """
         return iter(self.neighbors.values())
-    
+
     def update_temperature(self, temperature):
         """
         Updates the temperature of the node.
@@ -161,7 +162,7 @@ class Node:
             temperature (float): The new temperature value.
         """
         if self.heat_flux_int == 0:  # Update temperature only if it's not an electronic component
-                self.temperature = temperature
+            self.temperature = temperature
 
 
 class OrbitProperties():
@@ -180,7 +181,7 @@ class OrbitProperties():
         """
         Initialize the OrbitProperties class.
 
-        Args:
+        Parameters:
             altitude (float): Altitude in km.
             beta (float): Angle between orbit and equator in degrees.
             t (float): Time in seconds.
@@ -247,7 +248,7 @@ class OrbitProperties():
             a = (C.r_earth + self.h) * 1000 # Convert altitude to meters
             self._period_cache[self._h] = 2 * np.pi * np.sqrt(a**3 / C.mu)
         return self._period_cache[self._h]
-    
+
     def beta_critical(self):
         """
         Calculate the angle at which eclipse will be a factor to consider.
@@ -258,7 +259,7 @@ class OrbitProperties():
         if self._h not in self._beta_critical_cache:
             self._beta_critical_cache[self._h] = np.arcsin(C.r_earth / (C.r_earth + self._h))
         return self._beta_critical_cache[self._h]
-    
+
     def eclipse_fraction(self):
         """
         Calculate the fraction of orbit in eclipse.
@@ -276,7 +277,7 @@ class OrbitProperties():
         else:
             f_e = 0
         return f_e
-    
+
     def eclipse(self, t):
         """
         Check if the satellite is in eclipse.
@@ -294,17 +295,17 @@ class OrbitProperties():
         eclipse_start = self._period_cache[self._h]  / 2 * (1 - self.eclipse_fraction())
         eclipse_end = self._period_cache[self._h]  / 2 * (1 + self.eclipse_fraction())
         return eclipse_start < t_eclipse < eclipse_end
-    
+
     def view_factor(self, gammas, r_values):
         """
-        Calculate the view factor between satellite and earth/sun.
+        Calculate the view factor between nodes and earth/sun.
 
         Parameters:
-            gamma (float): Angle between satellite and earth/sun in degrees.
-            r_values (float): Radius of earth/sun in km.
+            gammas (dict: float): Angle between nodes and earth/sun in degrees.
+            r_values (dict: str): Irradiating body of nodes.
 
         Returns:
-            float: View factor between satellite and earth/sun.
+            np.ndarray: View factor.
         """
         r_values = np.array([C.r_earth if body == 'earth' else C.r_sun if body == 'sun' else np.nan for body in r_values])
 
@@ -335,7 +336,7 @@ class OrbitProperties():
                 view_factors[i] = 0  # Set view factor to 0 for angles outside the specified range
 
         return view_factors
-    
+
     def albedo(self):
         """
         Get the albedo of the earth.
@@ -344,7 +345,7 @@ class OrbitProperties():
             float: Albedo of the earth.
         """
         return 0.14 if self.beta < 30 else 0.19
-    
+
     def earth_ir(self):
         """
         Get the earth IR.
@@ -403,6 +404,9 @@ class ExternalHeatFlux:
     def t(self):
         """
         Gets the current time value.
+
+        Returns:
+            float: The current time value.
         """
         return self._t
 
@@ -437,26 +441,6 @@ class ExternalHeatFlux:
         self.op.beta = new_beta_angle  # Update beta angle in OrbitProperties
         self._eclipse_cache = None  # Invalidate eclipse cache
 
-    def vf_node(self):
-        """
-        Calculates the view factor of the node.
-
-        Returns:
-            The view factor of the node.
-        """
-        default_view_factor = 0 # Define a default view factor
-
-        if self.n.radiating_body == 'earth':
-            r = C.r_earth
-        elif self.n.radiating_body == 'sun':
-            r = C.r_sun
-        else:
-            # Return a default view factor if radiating_body is not 'earth' or 'sun'
-            return default_view_factor
-
-        gamma = self.n.gamma
-        return self.op.view_factor(gamma, r)
-    
     def calculate_eclipse_status(self):
         """
         Calculates the eclipse status for all nodes.
@@ -479,7 +463,7 @@ class ExternalHeatFlux:
             self._eclipse_cache = self.calculate_eclipse_status()
 
         vf = self.op.view_factor(self.gammas, self.radiating_bodies)
-        return np.where(~self._eclipse_cache, vf * self.areas * C.q_sun * self.absorptivities, 0)
+        return np.where(self._eclipse_cache is not None and ~self._eclipse_cache, vf * self.areas * C.q_sun * self.absorptivities, 0)
 
     def albedo_flux(self):
         """
@@ -488,7 +472,10 @@ class ExternalHeatFlux:
         Returns:
             The earth albedo flux on the node.
         """
-        return np.where(~self._eclipse_cache, self._albedo * self.areas * C.q_sun * self.absorptivities, 0)
+        if self._eclipse_cache is None:
+            self._eclipse_cache = self.calculate_eclipse_status()
+
+        return np.where(self._eclipse_cache is not None and ~self._eclipse_cache, self._albedo * self.areas * C.q_sun * self.absorptivities, 0)
 
     def earth_flux(self):
         """
@@ -510,7 +497,7 @@ class ExternalHeatFlux:
         albedo_flux = self.albedo_flux()
         earth_flux = self.earth_flux()
         return solar_flux + albedo_flux + earth_flux
-    
+   
 
 class ThermalModel:
     """
@@ -524,6 +511,10 @@ class ThermalModel:
         add_node(self, node: Node): Adds a node to the list of nodes.
         remove_node(self, key): Removes a node from the list of nodes.
         get_node(self, key): Retrieves a node by its key.
+        normal_vector_from_angles(theta_xy, theta_yz, theta_xz): Calculates the normal vector from given angles.
+        calculate_angles(node_i, node_j, normal1, normal2): Calculates the angles between the normal vectors of two faces.
+        compute_view_factor(args): Computes the view factor between two nodes.
+        is_occluded(self, index_i, index_j, positions): Checks if any node occludes the view between two nodes.
         internal_vf(self): Calculates the view factor between different nodes.
         heat_balance(self, h, beta, t): Calculates the heat balance equation.
         integrate_heat_balance(self, beta_range, h_range, time_range): Integrates the heat balance equation over a range of parameters.
@@ -548,9 +539,6 @@ class ThermalModel:
 
         Parameters:
             node (Node): The node to be added.
-
-        Returns:
-            None
         """
         self.nodes[node.key] = node
         self.vf_matrix = self.internal_vf()
@@ -562,9 +550,6 @@ class ThermalModel:
 
         Parameters:
             key (str): The key of the node to be removed.
-
-        Returns:
-            None
         """
         if key in self.nodes:
             del self.nodes[key]
@@ -604,7 +589,7 @@ class ThermalModel:
         normal_vector = np.array([cos_theta_xy, cos_theta_yz, cos_theta_xz])
         normal_vector /= np.linalg.norm(normal_vector)
         return normal_vector
-    
+
     @staticmethod
     def calculate_angles(node_i, node_j, normal1, normal2):
         """
@@ -637,7 +622,7 @@ class ThermalModel:
         theta_j = np.degrees(np.arccos(dot_product2))
 
         return theta_i, theta_j, R_ij
-    
+
     @staticmethod
     def compute_view_factor(args):
         """
@@ -672,7 +657,7 @@ class ThermalModel:
         )
 
         return result / A_i
-    
+
     def is_occluded(self, index_i, index_j, positions):
         """
         Check if any node occludes the view between two nodes.
@@ -695,10 +680,13 @@ class ThermalModel:
                     return True  # Node k occludes the view between node i and j
 
         return False
-    
+
     def internal_vf(self):
         """
         Calculate the view factor matrix between different nodes.
+
+        Returns:
+            numpy.ndarray: View factor matrix.
         """
         node_count = len(self.nodes)
         vf_matrix = np.zeros((node_count, node_count))  # Initialize matrix
@@ -754,7 +742,7 @@ class ThermalModel:
                     vf_matrix[i][j] = result / area_i
 
         return vf_matrix
-    
+
     def heat_balance(self, h, beta, t):
         """
         Calculate the rate of change of temperature for each node in the thermal model.
@@ -842,7 +830,6 @@ class ThermalModel:
         Returns:
             numpy.ndarray: Array of temperature values for each node.
         """
-
         beta, h, time, initial_T, ode_system_wrapper = args
         ode_system = ode_system_wrapper(h, beta)
         sol = solve_ivp(ode_system, [0, time], initial_T, method='RK45')
@@ -859,7 +846,6 @@ class ThermalModel:
         Returns:
             function: Function that calculates the rate of change of temperature for each node in the thermal model.
         """
-
         def ode_system(t, y):
             """
             ode_system calculates the rate of change of temperature for each node in the thermal model.
@@ -871,7 +857,6 @@ class ThermalModel:
             Returns:
                 numpy.ndarray: Array of the rate of change of temperature for each node.
             """
-
             for node, temp in zip(self.nodes.values(), y):
                 node.update_temperature(temp)
             return self.heat_balance(h, beta, t)
@@ -890,7 +875,6 @@ class ThermalModel:
         Returns:
             results (numpy.ndarray): Array of temperature values for each node.
         """
-
         initial_T = [node.temperature for node in self.nodes.values()]
         results_shape = (len(beta_range), len(h_range), len(time_range), len(initial_T))
         results = np.zeros(results_shape)

@@ -1,6 +1,9 @@
+"""
+A module that contains various functions for plotting the results of the thermal calculations.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.widgets import Slider
 
 

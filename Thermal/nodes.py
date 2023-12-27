@@ -1,7 +1,11 @@
+"""
+A module that contains constructors for nodes.
+"""
+
 from constants import Constants as C
 from materials import Material as Mat
 from materials import Component as Comp
-from thermalmodel_v4 import Node as Node
+from thermalmodel_v4 import Node
 
 Aluminium = Mat("Aluminium", 237, 897, 0.9, 0.3)
 Steel = Mat("Steel", 50, 500, 0.9, 0.3)
@@ -152,9 +156,9 @@ def construct_nodes(node_data=node_data, neighbor_mapping=neighbor_mapping):
     """
     Constructs nodes and sets up their neighbor relationships.
 
-    Args:
-        node_data: A list of dictionaries, each containing data for initializing a Node.
-        neighbor_mapping: A dictionary mapping node indices to lists of tuples (neighbor index, contact area).
+    Parameters:
+        node_data (list): A list of dictionaries, each containing data for initializing a Node.
+        neighbor_mapping (dict): A dictionary mapping node indices to lists of tuples (neighbor index, contact area).
 
     Returns:
         A list of constructed Node instances with neighbor relationships set.

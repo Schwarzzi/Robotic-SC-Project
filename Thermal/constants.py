@@ -1,9 +1,11 @@
+"""
+A module that contains various constants used in the thermal calculations.
+"""
 
 class Constants:
     """
     A class that contains various constants used in the thermal calculations.
     """
-
     G = 6.674 * (10 ** -11)  # Gravitational constant in m^3 kg^-1 s^-2
     M = 5.972 * (10 ** 24)   # Mass of Earth in kg
     mu = G * M  # Earth's gravitational parameter in m^3 s^-2
