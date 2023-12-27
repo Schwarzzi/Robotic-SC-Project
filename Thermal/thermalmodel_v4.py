@@ -412,7 +412,7 @@ class ThermalModel:
         integrate_heat_balance(self, beta_range, h_range, time_range): Integrates the heat balance equation over a range of parameters.
     """
 
-    __slots__ = ['nodes']
+    __slots__ = ['nodes', 'vf_matrix']
 
     def __init__(self, nodes: list) -> None:
         """
@@ -422,6 +422,7 @@ class ThermalModel:
             nodes (list): List of nodes in the thermal model.
         """
         self.nodes = {node.key: node for node in nodes}
+        self.vf_matrix = self.internal_vf()
 
 
     def add_node(self, node: Node):
@@ -434,7 +435,8 @@ class ThermalModel:
         Returns:
             None
         """
-        self.nodes.append(node)
+        self.nodes[node.key] = node
+        self.vf_matrix = self.internal_vf()
 
 
     def remove_node(self, key):
@@ -447,10 +449,9 @@ class ThermalModel:
         Returns:
             None
         """
-        for node in self.nodes:
-            if node.key == key:
-                self.nodes.remove(node)
-                break
+        if key in self.nodes:
+            del self.nodes[key]
+            self.vf_matrix = self.internal_vf()
 
 
     def get_node(self, key):
@@ -648,12 +649,11 @@ class ThermalModel:
 
         # Calculate the internal radiated heat flux
         q_internal_radiated = np.zeros(node_count)
-        vf_matrix = self.internal_vf()
         for i in range(node_count):
             for j in range(node_count):
                 node_i = list(self.nodes.values())[i]
                 node_j = list(self.nodes.values())[j]
-                q_internal_radiated[i] += node_i.emissivity * C.sigma * (node_i.temperature ** 4 - node_j.temperature ** 4) * node_i.area * vf_matrix[i][j]
+                q_internal_radiated[i] += node_i.emissivity * C.sigma * (node_i.temperature ** 4 - node_j.temperature ** 4) * node_i.area * self.vf_matrix[i][j]
 
         # Calculate the externally radiated heat flux
         q_radiated = np.zeros(node_count)
