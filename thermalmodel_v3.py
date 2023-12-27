@@ -222,7 +222,7 @@ def heat_balance(t, T, beta):
                                     0,
                                     0]) # Not in contact with negative velocity panel and solar arrays
 
-    # 6 attachment points for each side panel 
+    # 6 attachment points, one for each side panel 
     k_comp = np.array([
                     [237, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
                     [0, 237, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -330,8 +330,8 @@ def integrate_heat_balance(beta_range, time_range, initial_T):
 
 def plot_3d():
     # Define ranges for beta and time
-    beta_range = np.linspace(0, 90, 31)  # From 0 to 90 degrees
-    time_range = np.linspace(0, 60000, 500)  # Example time range
+    beta_range = np.linspace(0, 90, 2)  # From 0 to 90 degrees
+    time_range = np.linspace(0, 60000, 2)  # Example time range
     initial_T = np.full(10, 293.15)  # Initial temperatures
 
     # Integrate
@@ -342,6 +342,8 @@ def plot_3d():
     axs = axs.ravel()
 
     Node_title = ['Nadir-North', 'Nadir-South', 'South', 'Zenith-South', 'Zenith-North', 'North', 'Velocity', 'Negative Velocity', 'North Array', 'South Array']
+
+    vmin, vmax = 250, 450
 
     for i in range(10):
         X, Y = np.meshgrid(time_range, beta_range)
@@ -360,4 +362,4 @@ def plot_3d():
     plt.show()
 
 
-plot_3d()
+print(heat_balance(1000, np.full(10, 293.15), 30))
