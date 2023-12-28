@@ -9,6 +9,7 @@ from constants import Constants as C
 from materials import Component
 from tqdm import tqdm
 
+
 class Node:
     """
     Represents a node in the thermal model.
@@ -520,7 +521,7 @@ class ThermalModel:
         integrate_heat_balance(self, beta_range, h_range, time_range): Integrates the heat balance equation over a range of parameters.
     """
 
-    __slots__ = ['nodes', 'vf_matrix']
+    __slots__ = ['nodes', 'vf_matrix', 'k_matrix']
 
     def __init__(self, nodes: list) -> None:
         """
@@ -531,7 +532,7 @@ class ThermalModel:
         """
         self.nodes = {node.key: node for node in nodes}
         self.vf_matrix = self.internal_vf()
-
+        self.k_matrix = self.compute_conductivity_matrix()
 
     def add_node(self, node: Node):
         """
@@ -542,7 +543,7 @@ class ThermalModel:
         """
         self.nodes[node.key] = node
         self.vf_matrix = self.internal_vf()
-
+        self.k_matrix = self.compute_conductivity_matrix()
 
     def remove_node(self, key):
         """
@@ -554,7 +555,7 @@ class ThermalModel:
         if key in self.nodes:
             del self.nodes[key]
             self.vf_matrix = self.internal_vf()
-
+            self.k_matrix = self.compute_conductivity_matrix()
 
     def get_node(self, key):
         """
@@ -742,6 +743,26 @@ class ThermalModel:
                     vf_matrix[i][j] = result / area_i
 
         return vf_matrix
+    
+    def compute_conductivity_matrix(self):
+        """
+        Calculate the conductivity matrix.
+
+        Returns:
+            numpy.ndarray: Conductivity matrix.
+        """
+        node_count = len(self.nodes)
+
+        node_indices = {node_key: idx for idx, node_key in enumerate(self.nodes.keys())}
+
+        k_matrix = np.zeros((node_count, node_count))
+        for i, (key_i, node_i) in enumerate(self.nodes.items()):
+            for neighbor_node, _ in node_i.get_neighbors():
+                j = node_indices[neighbor_node.key]
+                k_matrix[i, j] = neighbor_node.conductivity
+                k_matrix[i, i] -= neighbor_node.conductivity
+        
+        return k_matrix
 
     def heat_balance(self, h, beta, t):
         """
@@ -758,33 +779,22 @@ class ThermalModel:
         thermal_control = True
 
         node_count = len(self.nodes)
-        k_matrix = np.zeros((node_count, node_count))
 
-        # Calculate the conductance matrix
-        for i, (key_i, node_i) in enumerate(self.nodes.items()):
-            neighbors = node_i.get_neighbors()
-            for neighbor in neighbors:
-                neighbor_node, _ = neighbor
-                key_j = neighbor_node.key
-                j = list(self.nodes.keys()).index(key_j)
-                k_matrix[i][j] = neighbor_node.conductivity
-                k_matrix[i][i] -= neighbor_node.conductivity
+        node_indices = {node_key: idx for idx, node_key in enumerate(self.nodes.keys())}
 
-        # Calculate the internal conducted heat flux
         q_internal = np.zeros(node_count)
         for i, node_i in enumerate(self.nodes.values()):
             for neighbor_key, neighbor_data in node_i.neighbors.items():
-                neighbor_node, contact_area = neighbor_data
-                j = list(self.nodes.keys()).index(neighbor_key)
+                j = node_indices[neighbor_key]
                 if i != j:
+                    neighbor_node, contact_area = neighbor_data
                     temperature_difference = self.nodes[neighbor_key].temperature - node_i.temperature
-                    q_internal[i] += k_matrix[i][j] * temperature_difference * contact_area
+                    q_internal[i] += self.k_matrix[i, j] * temperature_difference * contact_area
 
         # Unpack node properties into arrays
         temperatures = np.array([node.temperature for node in self.nodes.values()])
         emissivities = np.array([node.emissivity for node in self.nodes.values()])
         areas = np.array([node.area for node in self.nodes.values()])
-        radiating_bodies = np.array([node.radiating_body for node in self.nodes.values()])
         thermal_masses = np.array([node.thermal_mass for node in self.nodes.values()])
         heat_flux_ints = np.array([node.heat_flux_int for node in self.nodes.values()])
 

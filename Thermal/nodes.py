@@ -12,7 +12,6 @@ Steel = Mat("Steel", 50, 500, 0.9, 0.3)
 GalliumArsenide = Mat("Gallium Arsenide", 40, 340, 0.8, 0.8)
 Electronics = Comp("Electronics", 3000, Aluminium, 0.2)
 
-
 node_data = [
             {
                 'key': 1,
@@ -137,7 +136,6 @@ node_data = [
                 'position': [[-6, 0, 2.5], [125.75, 90, 35.75]],
             }
 ]
-
 
 # Define neighbor relationships
 neighbor_mapping = {
