@@ -27,6 +27,8 @@ def plot_3d(tm, beta_range, h_range, time_range):
     num_rows = num_nodes // num_cols + (num_nodes % num_cols > 0)
     fig, axs = plt.subplots(num_rows, num_cols, subplot_kw={'projection': '3d'}, figsize=(20, num_rows * 4))
     axs = axs.ravel() if num_rows > 1 else [axs]
+    global_min_temp = np.min(temperatures)
+    global_max_temp = np.max(temperatures)
 
     def update_plot(val):
         """
@@ -40,12 +42,12 @@ def plot_3d(tm, beta_range, h_range, time_range):
                 ax.clear()
                 X, Y = np.meshgrid(time_range, beta_range)
                 Z = temperatures[:, h_index, :, i]
-                ax.plot_surface(X, Y, Z, cmap='viridis', vmin=250, vmax=450)
+                ax.plot_surface(X, Y, Z, cmap='viridis', vmin=global_min_temp, vmax=global_max_temp)
                 ax.set_title(tm.nodes[node_key].name)  # Set title using node name
                 ax.set_xlabel('Time (s)')
                 ax.set_ylabel('Beta Angle (deg)')
                 ax.set_zlabel('Temperature (K)')
-                ax.set_zlim(250, 450)
+                ax.set_zlim(global_min_temp, global_max_temp)
             else:
                 ax.axis('off')
 
