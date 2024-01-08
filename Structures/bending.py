@@ -24,3 +24,5 @@ EIV_max = max(EIv.min(), EIv.max(), key=abs)
 print(EIV_max)
 Ireq = EIV_max / (E*max_d)
 print(f"required moment of inertia: {Ireq*10**6}")
+
+#testing
