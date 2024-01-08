@@ -30,13 +30,24 @@ def process_mesh(mesh):
     mesh.calculate_geometric_properties()
     mesh.calculate_warping_properties()
 
-    case1 = mesh.calculate_stress(mxx=5e6, vy=-10e3, mzz=3e6)
-    case2 = mesh.calculate_stress(myy=15e6, vx=30e3, mzz=1.5e6)
 
-    case1.plot_stress(stress="m_zz")
+def find_stress(mesh):
+    stress = mesh.calculate_stress(
+            n=100e3,
+            mxx=10e6,
+            myy=5e6,
+            vx=25e3,
+            vy=50e3,
+            mzz=3e6,
+        )
+
+    stress.plot_stress(stress="zxy", cmap="viridis", normalize=False)
 
 
+def run():
+    geom = create_geometry(10, 10, 1, mat3)
+    mesh = make_mesh(geom)
+    process_mesh(mesh)
+    return find_stress(mesh)
 
-geom = create_geometry(10, 10, 1, mat3)
-mesh = make_mesh(geom)
-process_mesh(mesh)
+run()
