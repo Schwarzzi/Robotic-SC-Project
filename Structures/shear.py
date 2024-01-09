@@ -1,53 +1,23 @@
-from sectionproperties.pre.library import rectangular_section
-from sectionproperties.pre.library import rectangular_hollow_section
-from sectionproperties.pre import Material
+from geometry import make_geometry
 from sectionproperties.analysis import Section
 
 
-mat3 = Material(
-    name="Steel",
-    elastic_modulus=200e9,
-    poissons_ratio=0.3,
-    yield_strength=250e6,
-    density=8000,
-    color="gray",
-)
+def stress_analysis(poly: Section, mode: str="shear", *args):
+    """
+    Perform stress analysis on the section.
 
-def create_geometry(side1, side2, t, material):
+    Parameters:
+        poly (Section): The section to perform the stress analysis on.
+        mode (str): The type of stress analysis to perform.
+        *args: Additional arguments to pass to the stress analysis function.
 
-    p1 = rectangular_section(d=side1, b=side2, material=material).align_center()
-    p2 = rectangular_section(d=side1 - t, b= side2 - t, material=material).align_center()
-    geom = p1 - p2
-    # geom.plot_geometry()
-    return geom
+    Returns:
+        None
+    
+    """
+    section = poly
+    s = section.calculate_stress(vx=10e3, vy=10e3)
+    s.plot_stress(stress=mode, cmap='viridis', normalize=True)
 
-def make_mesh(geometry):
-    mesh = Section(geometry.create_mesh(mesh_sizes=[10]))
-    # mesh.plot_mesh()
-    return mesh
-
-def process_mesh(mesh):
-    mesh.calculate_geometric_properties()
-    mesh.calculate_warping_properties()
-
-
-def find_stress(mesh):
-    stress = mesh.calculate_stress(
-            n=100e3,
-            mxx=10e6,
-            myy=5e6,
-            vx=25e3,
-            vy=50e3,
-            mzz=3e6,
-        )
-
-    stress.plot_stress(stress="zxy", cmap="viridis", normalize=False)
-
-
-def run():
-    geom = create_geometry(10, 10, 1, mat3)
-    mesh = make_mesh(geom)
-    process_mesh(mesh)
-    return find_stress(mesh)
-
-run()
+poly = make_geometry(display=True)
+stress_analysis(poly, mode="zxy")
