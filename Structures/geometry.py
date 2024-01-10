@@ -96,7 +96,7 @@ def create_hollow_hexagon(inner_radius: float, thickness: float, square_side: fl
 
     return unary_union(all_geometries)
 
-def make_geometry(inner_radius: float=160, thickness: float=0.2, square_side: float=10, square_thickness: float=0.5, display: bool=False) -> Polygon:
+def make_geometry(inner_radius: float=1600, thickness: float=1, square_side: float=75, square_thickness: float=2, display: bool=False) -> Polygon:
     """
     Creates a geometry by calling the create_hollow_hexagon function with the specified parameters.
 
@@ -124,6 +124,24 @@ def make_geometry(inner_radius: float=160, thickness: float=0.2, square_side: fl
     if display:
         sec.plot_mesh()
 
+    sec.calculate_geometric_properties()
+    sec.calculate_warping_properties()
+    sec.calculate_plastic_properties()
+    return sec
+
+def make_square_geometry(side=75, thickness=2):
+    steel = Material(name="Steel",
+                    elastic_modulus=200e3,  # N/mm^2 (MPa)
+                    poissons_ratio=0.3,  # unitless
+                    density=7.85e-6,  # kg/mm^3
+                    yield_strength=500,  # N/mm^2 (MPa)
+                    color="grey",
+                )
+    poly = create_hollow_square(center=(0,0), side=side, thickness=thickness)
+    geom = Geometry(geom=poly, material=steel)
+    geom.create_mesh(mesh_sizes=1)
+    sec = Section(geometry=geom)
+    sec.plot_mesh()
     sec.calculate_geometric_properties()
     sec.calculate_warping_properties()
     sec.calculate_plastic_properties()

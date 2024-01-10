@@ -45,4 +45,4 @@ class Constants:
     sigma = 5.67 * 10 ** -8 # Stefan-Boltzmann constant W / m^2 K^4
 
     T_0 = 293.15 # Initial temperature K
-    T_space = 2.725 # Temperature of space K
+    T_space = 2.725 # Temperature of space K #TODO: Change into dictionary based on eclipse state {sun: 395, eclipse: 210}
