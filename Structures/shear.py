@@ -102,13 +102,15 @@ def stress_analysis(poly: Section, mode: str="zxy", forces: dict={'n': 100e3}):
     """
     section = poly
     s = section.calculate_stress(**forces)
-    s.plot_stress(stress=mode, cmap='viridis', normalize=True)
+    s.plot_stress(stress=mode, cmap='viridis', normalize=True, alpha=0.2)
+    s.plot_stress_vector(stress='v_zxy', cmap='viridis', normalize=True)
+    s.plot_mohrs_circles(-34, 34)
 
 # poly = make_geometry(display=False)
 poly = make_square_geometry()
-forces = {'n': 211.896e6 / 6,
-          'vx': 70.632e6 / 6,
-          'vy': 70.632e6 / 6}
+forces = {'n': 211.896e3,
+          'vx': 70.632e3,
+          'vy': 70.632e3}
 
 
 stress_analysis(poly, forces=forces)

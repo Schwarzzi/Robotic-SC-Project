@@ -37,7 +37,7 @@ def pressure_sphere(r: float, p: float, t = np.linspace(0.5, 3, 1000)) -> tuple:
     return f1, f1, p, t, r
     
 
-def pressure_cylinder(r: float, p: float, t=np.linspace(0.5, 3, 1000)) -> tuple:
+def pressure_cylinder(r: float, p: float, t=np.linspace(0.01, 3, 1000)) -> tuple:
     """
     Calculates the stress due to pressure inside a sphere.
 
@@ -114,11 +114,32 @@ def plot(func, mat):
     print(f"Minimum thickness required with safety factor of 1.2: {1.2 * minimum_thickness:.2f} mm")
     
 
+def shell_buckling(p, r, t, L, mat):
+    # https://www.abbottaerospace.com/aa-sb-001/15-local-stability-isotropic-materials/15-4-buckling-specific-cases/15-4-1-buckling-of-thin-cylindrical-shells/
+    # eq1 = r / t * np.sqrt(1 - mat.poisson ** 2) - 20
+    # eq2 = L ** 2 * (1 - mat.poisson ** 2) / (r * t)
+    # ky = 200
+    # sigma_cr = ky * np.pi ** 2 * mat.young / (12 * (1 - mat.poisson ** 2)) * (t / L) ** 2
+    # f_cr = sigma_cr * t / r
+    # print(f_cr)
+    lam = np.sqrt(12/np.pi ** 4 * L**4 / (r**2 * t**2) * (1 - mat.poisson ** 2))
+    Q = p  / mat.young * (r**2 / t**2)
+    k = lam + 12/np.pi ** 4 * L**4 / (r**2 * t**2) * (1 - mat.poisson ** 2) * 1 /lam
+    sigma_cr = (1.983 - 0.983 * np.exp(-23.14 * Q)) * k * np.pi ** 2 * mat.young / (12 * (1 - mat.poisson ** 2)) * (t / L) ** 2
+    print(sigma_cr // 1.2)
+    f_cr = sigma_cr * t / r
+    print(f_cr // 1.2)
+# Presurant tank: 300 bars, 
+# Propellant/Oxidizer tank: 30 bars, 1194, 915
+
+
 aluminium = Material('Aluminium', 2700, 70e9, 0.33, 100e6)
 steel = Material('Steel', 7850, 210e9, 0.3, 440e6)
 titanium = Material('Titanium', 4500, 110e9, 0.34, 827e6)
 
-cylinder = pressure_cylinder(500, 2.2e6)
+cylinder = pressure_cylinder(300, 101325)
 sphere = pressure_sphere(500, 2.2e6)
 
-plot(cylinder, titanium)
+plot(cylinder, steel)
+
+shell_buckling(101325, 0.300, 0.00008, 0.800, steel)

@@ -1,6 +1,5 @@
-from sectionproperties.pre import Material
+from sectionproperties.pre import Material, Geometry
 from sectionproperties.analysis import Section
-from sectionproperties.pre import Geometry
 import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import Polygon, LinearRing
@@ -124,12 +123,12 @@ def make_geometry(inner_radius: float=1600, thickness: float=1, square_side: flo
     if display:
         sec.plot_mesh()
 
-    sec.calculate_geometric_properties()
+    sec.calculate_geometric_properties() # MPa
     sec.calculate_warping_properties()
     sec.calculate_plastic_properties()
     return sec
 
-def make_square_geometry(side=75, thickness=2):
+def make_square_geometry(side=70, thickness=2):
     steel = Material(name="Steel",
                     elastic_modulus=200e3,  # N/mm^2 (MPa)
                     poissons_ratio=0.3,  # unitless
@@ -137,9 +136,10 @@ def make_square_geometry(side=75, thickness=2):
                     yield_strength=500,  # N/mm^2 (MPa)
                     color="grey",
                 )
+    
     poly = create_hollow_square(center=(0,0), side=side, thickness=thickness)
     geom = Geometry(geom=poly, material=steel)
-    geom.create_mesh(mesh_sizes=1)
+    geom.create_mesh(mesh_sizes=0.1)
     sec = Section(geometry=geom)
     sec.plot_mesh()
     sec.calculate_geometric_properties()
