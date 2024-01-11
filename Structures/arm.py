@@ -1,6 +1,6 @@
 import numpy as np
 
-def shear_tear_out_failure(pbr, As):
+def shear_tear_out(pbr, As):
     """
     Calculates the shear tear out failure of a bolt.
 
@@ -12,37 +12,42 @@ def shear_tear_out_failure(pbr, As):
         float: The shear tear out stress in MPa.
     """
     shear_tear_out_stress = pbr / As
+    return shear_tear_out_stress
 
-def bearing_faliure(pbr, D, t):
+def bearing(nf, Fx, Fz, My, D, t, A: list, r: list):
     """
     Calculates the bearing failure of a bolt.
 
     Parameters:
-        pbr (float): The bearing load on the bolt in N.
-        D (float): The diameter of the bolt in mm.
+        nf (float): The number of fasteners.
+        Fx (float): The axial load on the bolt in N.
+        Fz (float): The shear load on the bolt in N.
+        My (float): The bending moment in N-mm.
+        D (float): The distance between applied force and NA in mm.
         t (float): The thickness of the material in mm.
-
+        A (list): The area of the bolt in mm^2.
+        r (list): The distance of the bolt from the neutral axis in mm.
     Returns:
         float: The bearing stress in MPa.
     """
-    bearing_stress = pbr / D / t
+    return (np.array(Fx / nf) + np.array(Fz / nf) + [My * A[i] * r[i] / np.sum(np.multiply(A, np.square(r))) for i in range(nf)]) / D / t
     
 
-def pull_push_through(Fy, nf, Mz, At, ri, Ai):
+def pull_through(Fy, nf, Mz, D_fo, D_fi, r: list, A: list):
     """
     Calculates the pull/push through failure of a bolt.
 
     Parameters:
-        Fy (float): The tensile load on the bolt in N.
+        Fy (float): The axial load on the bolt in N.
         nf (float): The number of fasteners.
         Mz (float): The bending moment in N-mm.
-        At (float): The tensile area of the bolt in mm^2.
-        ri (np.ndarray): The distance of the bolt from the neutral axis in mm.
-        Ai (float): The tensile area of the bolt in mm^2.
+        D_fo (float): The diameter of the bolt head/nut in mm.
+        D_fi (float): The diameter of the bolt in mm.
+        r (list): The distance of the bolt from the neutral axis in mm.
+        A (list): The area of the bolt in mm^2.
     """
-    f_pt = Fy / nf
-    f_pmz = Mz * At * np.sum(ri) / Ai / np.sum(ri ** 2) 
-    shear_stress = Fy / At
+    return (np.array(Fy / nf) + [Mz * A[i] * r[i] / np.sum(np.multiply(A, np.square(r))) for i in range(nf)]) / (D_fo - D_fi) * np.pi ** 2 / 4
+
 
 def net_section(Fsu, w, nf, df, t):
     """
@@ -59,9 +64,10 @@ def net_section(Fsu, w, nf, df, t):
         float: The net section of the bolt in mm^2.
     """
     net_section_stress = Fsu / (w - nf * df) / t
+    return net_section_stress
     
 
-def end_pad_shear_failure(pt, dw, te, Fsu):
+def end_pad_shear(pt, dw, te, Fsu):
     """
     Calculates the end pad shear failure of a bolt.
 
@@ -79,3 +85,16 @@ def end_pad_shear_failure(pt, dw, te, Fsu):
     return end_pad_shear_stress, allowable_bolt_tension
 
 
+nf = 5
+Fx = 1000
+Fz = 1000
+Fy = 1000
+My = 100
+D = 50
+t = 5
+A = [1, 2, 1, 4, 3]
+r = [2, 2, 3, 4, 5]
+D_fo = 6
+D_fi = 4
+
+print(pull_through(Fy, nf, My, D_fo, D_fi, r, A))
