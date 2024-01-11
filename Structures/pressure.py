@@ -140,6 +140,12 @@ titanium = Material('Titanium', 4500, 110e9, 0.34, 827e6)
 cylinder = pressure_cylinder(300, 101325)
 sphere = pressure_sphere(500, 2.2e6)
 
-plot(cylinder, steel)
+#plot(cylinder, steel)
 
-shell_buckling(101325, 0.300, 0.00008, 0.800, steel)
+shell_buckling(101325, 0.300, 0.008, 0.800, aluminium)
+
+
+def mass_cylinder(r, t, L, mat):
+    return 2 * np.pi * r * t * L * mat.den
+
+print(mass_cylinder(0.300, 0.001, 0.800, aluminium))
