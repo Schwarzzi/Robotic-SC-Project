@@ -46,8 +46,8 @@ def pressure_cylinder(r: float, p: float, t=np.linspace(0.5, 3, 1000)) -> tuple:
         p (float): The pressure inside the sphere in Pa.
         t (np.ndarray): The thickenss range of the simulation in mm.
     """
-    fl = p * r / 2 / t
-    fh = p * r / t
+    fl = np.array(p * r / 2 / t)
+    fh = np.array(p * r / t)
     return fl, fh, p, t, r
 
 
@@ -78,6 +78,22 @@ def compatibility_mat(shape='sphere', *args, **kwargs):
 def plot(func, mat):
     fl, fh, p, t, r = func
     max_stress = mat.sigma_max
+
+    # Find intersections
+    intersections = {'Longitudinal Stress': [], 'Hoop Stress': []}
+
+    # Helper function to find intersections
+    def find_intersections(stress, label):
+        for i in range(1, len(t)):
+            if (stress[i-1] - max_stress) * (stress[i] - max_stress) < 0:
+                # Linear interpolation for more accurate intersection point
+                x_intersect = t[i-1] + (t[i] - t[i-1]) * (max_stress - stress[i-1]) / (stress[i] - stress[i-1])
+                intersections[label].append((x_intersect, max_stress))
+
+    find_intersections(fl, 'Longitudinal Stress')
+    find_intersections(fh, 'Hoop Stress')
+
+    # Plotting
     plt.figure(figsize=(10, 6))
     plt.plot(t, fl, label='Longitudinal Stress')
     plt.plot(t, fh, label='Hoop Stress')
@@ -87,13 +103,22 @@ def plot(func, mat):
     plt.legend()
     plt.grid(True)
     plt.show()
+
+    # Printing intersections
+    for stress_type, points in intersections.items():
+        for point in points:
+            print(f"Intersection at {stress_type}: Thickness = {point[0]:.2f} mm")
+
+    minimum_thickness = max(intersections['Longitudinal Stress'][0][0], intersections['Hoop Stress'][0][0])
+
+    print(f"Minimum thickness required with safety factor of 1.2: {1.2 * minimum_thickness:.2f} mm")
     
 
 aluminium = Material('Aluminium', 2700, 70e9, 0.33, 100e6)
-steel = Material('Steel', 7850, 210e9, 0.3, 200e6)
-titanium = Material('Titanium', 4500, 110e9, 0.34, 100e6)
+steel = Material('Steel', 7850, 210e9, 0.3, 440e6)
+titanium = Material('Titanium', 4500, 110e9, 0.34, 827e6)
 
-cylinder = pressure_cylinder(500, 200e6)
-sphere = pressure_sphere(500, 200e6)
+cylinder = pressure_cylinder(500, 2.2e6)
+sphere = pressure_sphere(500, 2.2e6)
 
-plot(cylinder, aluminium)
+plot(cylinder, titanium)
