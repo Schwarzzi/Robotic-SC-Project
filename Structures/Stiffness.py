@@ -43,10 +43,11 @@ print(f"solar array frequency = {f_n_sa}")
 #robotic arm simulation
 
 E = 70*10**9 #https://www.carpenteradditive.com/hubfs/Resources/Data%20Sheets/Scalmalloy_Datasheet.pdf
-D_out = 0.137
-D_in = 0.132
-I = np.pi * D_out**4 / 64  - np.pi*D_in**4 / 64
-A = np.pi*D_out**2 /4  - np.pi*D_in**2 / 4
+D_out = 0.13756
+thickness = 0.006878
+D_in = D_out-thickness
+I = np.pi * (D_out**4-D_in**4) / 64
+A = np.pi * (D_out**2-D_in**2) / 4
 m_payload = 2500
 m_arm = 20
 L_arm = 1.8
