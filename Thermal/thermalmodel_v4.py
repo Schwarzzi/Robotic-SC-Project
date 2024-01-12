@@ -842,7 +842,7 @@ class ThermalModel:
         """
         beta, h, time, initial_T, ode_system_wrapper = args
         ode_system = ode_system_wrapper(h, beta)
-        sol = solve_ivp(ode_system, [0, time], initial_T, method='RK45')
+        sol = solve_ivp(ode_system, [0, time], initial_T, method='RK45', dense_output=True)
         return sol.y[:, -1]
 
     def ode_system_wrapper(self, h, beta):
