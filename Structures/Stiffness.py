@@ -10,15 +10,29 @@ L = 5
 Imm = (75**4/12 - 71**4/12) + 584*805.4**2 + (465*2**3)/12 + 465*2*806.4**2 + (2*930**3*np.sin(60)**2)/12 + 930*2*(0.5*np.sin(60)*930)**2
 I = 4*Imm*10**(-12)
 
-f_nat_ax_b = 0.25*np.sqrt(A*E/(m*L))
+#simple pillar approximation
+f_nat_ax_b = 0.16*np.sqrt(A*E/(m*L))
+f_nat_lat_b = 0.276*np.sqrt(E*I/(m*L**3))
 
-f_nat_lat_b = 0.56*np.sqrt(E*I/(m*L**3))
+f_nat_ax_un = 0.25*np.sqrt(A*E/(m*L))
+f_nat_lat_un = 0.56*np.sqrt(E*I/(m*L**3))
 
 f_nat_sdof = 1/(2*np.pi) * np.sqrt(3*E*I/ (m*L**3))
 
-print(f"lateral = {f_nat_lat_b}")
-print(f"axial = {f_nat_ax_b}")
+print(f"lateral simple = {f_nat_lat_b}")
+print(f"axial simple = {f_nat_ax_b}")
+print(f"lateral uniform = {f_nat_lat_un}")
+print(f"axial uniform = {f_nat_ax_un}")
 print(f"sdof = {f_nat_sdof}")
+
+#rms frequencies
+psd = 0.0044
+damping = 0.02
+sf_rms = 5
+
+x_rms = np.sqrt(np.pi * f_nat_sdof*psd/(4*damping))
+
+print(f"peak RMS g = {sf_rms*x_rms}")
 
 ###########
 #solar array frequency
