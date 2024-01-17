@@ -50,7 +50,6 @@ class Node:
             heat_flux (float): Heat flux in watts (default: 0).
             mli (dict): Additional arguments for the MLI model.
                 [{temperature: float, emissivity: float, absorptivity: float, cp: float, area: float, mass: float, xi: float]}]
-
         """
         self.key = key
         self.name = name
