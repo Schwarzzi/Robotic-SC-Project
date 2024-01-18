@@ -187,3 +187,5 @@ def stress_concentration(d, w, t, F, M):
     sigma_max_axial = kt_axial * F / (w - d) / t
     kt_moment = (1.79 + 0.25 / (0.39 + d / t) + 0.81 / (1 + d ** 2 / t ** 2) - 0.26 / (1 + d ** 3 / t ** 3)) * (1 - 1.04 * d / w + 1.22 * d ** 2 / w ** 2)
     sigma_max_moment = kt_moment * 6 * M / ( w - d) / t ** 2
+
+    return sigma_max_axial, sigma_max_moment
