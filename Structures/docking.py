@@ -15,7 +15,7 @@ def separation(mass, dx1, dx2, max_k):
     Returns:
         tuple: A tuple containing the spring constants, impulses, and velocities.
     """
-    k_values = np.linspace(0, max_k, 50)
+    k_values = np.linspace(0, max_k, 500)
     impulses = []
     velocities = []
     
@@ -32,41 +32,41 @@ def separation(mass, dx1, dx2, max_k):
 
 def plot(results):
     k, impulses, velocities = results
-    fig, ax1 = plt.subplots()
+    # fig, ax1 = plt.subplots()
 
-    # Plot the first line with impulses
-    color = 'tab:red'
-    ax1.set_xlabel('Spring Constant (k)')
-    ax1.set_ylabel('Impulse (Ns)', color=color)
-    ax1.plot(k, impulses, color=color)
-    ax1.tick_params(axis='y', labelcolor=color)
-    ax1.set_ylim(0, 1.1 * max(impulses))  # Ensure impulses are within the frame
+    # # Plot the first line with impulses
+    # color = 'tab:red'
+    # ax1.set_xlabel('Spring Constant (k)')
+    # ax1.set_ylabel('Impulse (Ns)', color=color)
+    # ax1.plot(k, impulses, color=color)
+    # ax1.tick_params(axis='y', labelcolor=color)
+    # ax1.set_ylim(0, 1.1 * max(impulses))  # Ensure impulses are within the frame
 
-    # Create a twin Axes sharing the xaxis
-    ax2 = ax1.twinx()  
+    # # Create a twin Axes sharing the xaxis
+    # ax2 = ax1.twinx()  
     
-    # Plot the second line with velocities
-    color = 'tab:blue'
-    ax2.set_ylabel('Velocity (m/s)', color=color)
-    ax2.plot(k, velocities, color=color)
-    ax2.tick_params(axis='y', labelcolor=color)
-    ax2.set_ylim(0, 1.1 * max(velocities))  # Ensure velocities are within the frame
+    # # Plot the second line with velocities
+    # color = 'tab:blue'
+    # ax2.set_ylabel('Velocity (m/s)', color=color)
+    # ax2.plot(k, velocities, color=color)
+    # ax2.tick_params(axis='y', labelcolor=color)
+    # ax2.set_ylim(0, 1.1 * max(velocities))  # Ensure velocities are within the frame
 
-    fig.tight_layout()  # To ensure the right y-label is not clipped
-    plt.show()
-
-
-    # plt.figure(figsize=(10, 6))
-    # plt.plot(k, impulses, label='Impulses')
-    # plt.plot(k, velocities, label='Velocities')
-    # plt.xlabel('Spring stiffness (N/m)')
-    # plt.ylabel('Velocities (m/s) | Impulses (Ns)')
-    # plt.legend()
-    # plt.grid(True)
+    # fig.tight_layout()  # To ensure the right y-label is not clipped
     # plt.show()
 
 
-imp = separation(50, 1e-2, 1.7e-2, 1250)
+    plt.figure(figsize=(10, 6))
+    plt.plot(k, impulses, label='Impulses')
+    plt.plot(k, velocities, label='Velocities')
+    plt.xlabel('Spring stiffness (N/m)')
+    plt.ylabel('Velocities (m/s) | Impulses (Ns)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
+imp = separation(50, 1e-2, 1.7e-2, 13000)
 
 #print(imp[1])
 plot(imp)

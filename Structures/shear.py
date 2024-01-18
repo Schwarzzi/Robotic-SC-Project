@@ -108,9 +108,9 @@ def stress_analysis(poly: Section, mode: str="zxy", forces: dict={'n': 100e3}):
 
 # poly = make_geometry(display=False)
 poly = make_square_geometry()
-forces = {'n': 211.896e3,
-          'vx': 70.632e3,
-          'vy': 70.632e3}
+forces = {'n': 7.7e3,
+          'vx': 6.7e3,
+          'vy': 6.7e3}
 
 
 stress_analysis(poly, forces=forces)

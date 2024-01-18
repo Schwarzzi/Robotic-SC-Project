@@ -88,33 +88,54 @@ def end_pad_shear(nf, Fy, D_fo, t, Fsu):
     allowable_bolt_tension = Fsu * np.pi * D_fo * t
     return np.array(end_pad_shear_stress)
 
+def stress_concentration(d, w, t, F, M):
+    """
+    Function to calculate the maximum stress in a plate with a hole.
+
+    Parameters:
+        d (float): The diameter of the hole in mm.
+        w (float): The width of the plate in mm.
+        t (float): The thickness of the plate in mm.
+        F (float): The axial load on the bolt in N.
+        M (float): The bending moment in N-mm.
+    """
+    kt_axial = 3 - 3.13 * (d / w) + 3.66 * (d / w) ** 2 - 1.53 * (d / w) ** 3
+    sigma_max_axial = kt_axial * F / (w - d) / t
+    kt_moment = (1.79 + 0.25 / (0.39 + d / t) + 0.81 / (1 + d ** 2 / t ** 2) - 0.26 / (1 + d ** 3 / t ** 3)) * (1 - 1.04 * d / w + 1.22 * d ** 2 / w ** 2)
+    sigma_max_moment = kt_moment * 6 * M / ( w - d) / t ** 2
+
+    return sigma_max_axial, sigma_max_moment
 
 def plot():
     # max_stress = mat.sigma_max
-
-    nf = 29
-    Fx = 100000 # N
-    Fz = 520000 # N
-    Fy = 3200000 # N
-    My = 34000 # N-mm
-    Mz = 28000 # N-mm
+    nf = 4
+    Fx = 8000 # N
+    Fz = 8000 # N
+    Fy = 8000 # N
+    My = 1000 # N-mm
+    Mz = 1000 # N-mm
     Distance = 404.44 # mm
-    radial_distances = np.array([431.45, 328.12, 357.66, 408.94, 407.71, 356.14, 330.95, 326.47, 358.27, 410.25,
-                         362.63, 338.83, 427.14, 338.74, 425.07, 360.76, 401.27, 396.65, 354.46, 326.96,
-                           406.09, 408.31, 322.22, 349.67, 391.25, 395.72, 353.31, 329.46, 425.70]) * np.array(0.612) # mm
-    D_fi = 22 * 0.612 # mm
-    D_fo = 37 * 0.612 # mm
-    Areas = np.array([(22/2) ** 2 * np.pi ] * 29) * np.array(0.612) # mm
-    Fsu = 500 # MPa
-    w = 550 # mm
+    radial_distances = [1.125, 1.125, 1.125, 1.125]
+    # radial_distances = np.array([431.45, 328.12, 357.66, 408.94, 407.71, 356.14, 330.95, 326.47, 358.27, 410.25,
+    #                      362.63, 338.83, 427.14, 338.74, 425.07, 360.76, 401.27, 396.65, 354.46, 326.96,
+    #                        406.09, 408.31, 322.22, 349.67, 391.25, 395.72, 353.31, 329.46, 425.70]) * np.array(0.612) # mm
+    D_fi = 1 #22 * 0.612 # mm
+    D_fo = 1.4 #37 * 0.612 # mm
+    Areas = np.array([(D_fo/2) ** 2 * np.pi] * len(radial_distances) ) # np.array([(22/2) ** 2 * np.pi ] * 29) * np.array(0.612) # mm
+    Fsu = 470 # MPa steel
+    w = 30 # mm
+    w_backup = 75 # w + 50 # mm
+    
 
+    F_max = []
     sto_x_var = []
     sto_z_var = []
     bearing_var = []
     pt_var = []
     net_var = []
     eps_var = []
-    ts = np.linspace(0.01, 3, 1000)
+
+    ts = np.linspace(1, 4, 1000)
     for t in ts: # mm
         sto_x_var.append(shear_tear_out(Fx, Areas))
         sto_z_var.append(shear_tear_out(Fz, Areas))
@@ -122,6 +143,7 @@ def plot():
         pt_var.append(pull_through(Fy, nf, Mz, D_fo, D_fi, radial_distances, Areas))
         net_var.append(net_section(Fsu, w, nf, D_fi, t))
         eps_var.append(end_pad_shear(nf, Fy, D_fo, t, Fsu))
+        F_max.append(np.max(stress_concentration(D_fi, w_backup, t, np.max(np.array([Fx, Fz, Fy])), np.max(np.array([My, Mz])))))
     
     i = 1
     titles = ['Shear tear out x', 'Shear tear out z', 'Bearing', 'Pull through', 'Net section', 'End pad shear']
@@ -130,16 +152,18 @@ def plot():
         var = np.array(var).T
         plt.figure(i)
         for j in var:
-            plt.plot(ts, j, label=f'Fastener {i}')
+            plt.plot(ts, j, label='Fastener')
+            plt.plot(ts, F_max, label='Max Stress', color='black')
+            plt.axhline(Fsu, color='red', linestyle='--', label='Max Allowable Stress')
             
         plt.xlabel('Thickness (mm)')
         plt.ylabel('Stress (MPa)')
-        plt.legend(labels = [f'Fastener {i}' for i in range(1, 30)], ncol=3, loc='best')
-        plt.axhline(Fsu, color='red', linestyle='--', label='Max Allowable Stress')
+        plt.legend(labels = ['Maxiumum back-up plate stress', 'Maximum fastener stress'], loc='best')
         plt.grid(True)
         plt.title(titles[i-1])
         i += 1
 
+    
     plt.show()
 
     return np.max(np.array([sto_x_var, sto_z_var, bearing_var, pt_var, net_var, eps_var]).flatten()) # fix
@@ -179,13 +203,9 @@ def plot():
 
     # print(f"Minimum thickness required with safety factor of 1.2: {1.2 * minimum_thickness:.2f} mm")
 
+
+
+
 a = plot()
 print(a)
 
-def stress_concentration(d, w, t, F, M):
-    kt_axial = 3 - 3.13 * (d / w) + 3.66 * (d / w) ** 2 - 1.53 * (d / w) ** 3
-    sigma_max_axial = kt_axial * F / (w - d) / t
-    kt_moment = (1.79 + 0.25 / (0.39 + d / t) + 0.81 / (1 + d ** 2 / t ** 2) - 0.26 / (1 + d ** 3 / t ** 3)) * (1 - 1.04 * d / w + 1.22 * d ** 2 / w ** 2)
-    sigma_max_moment = kt_moment * 6 * M / ( w - d) / t ** 2
-
-    return sigma_max_axial, sigma_max_moment

@@ -128,7 +128,7 @@ def make_geometry(inner_radius: float=1600, thickness: float=1, square_side: flo
     sec.calculate_plastic_properties()
     return sec
 
-def make_square_geometry(side=70, thickness=2):
+def make_square_geometry(side=30, thickness=2):
     steel = Material(name="Steel",
                     elastic_modulus=200e3,  # N/mm^2 (MPa)
                     poissons_ratio=0.3,  # unitless
