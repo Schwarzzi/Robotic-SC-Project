@@ -5,7 +5,7 @@ m = 3000
 F_DL = m*a
 sf = 1.25*1.1
 F_DL = F_DL*sf
-l = 5
+l = 4.45
 
 E = 210*10**9 #E modulus of material of crossbeam
 max_d = 2 *10**(-3) #Maximum deflection of material
