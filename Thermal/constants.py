@@ -12,21 +12,22 @@ class Constants:
     r_earth = 6378 # radius earth km
     r_sun = 147310000 # Distance earth-sun km
 
-    A_panel = 4.657 # Area side skin panel m^2
-    A_top = 2.25 # Area top skin panel m^2
-    A_solar = 6 # Area solar array m^2
+    A_panel = 5.21 # Area side skin panel m^2
+    A_top = 3.54 # Area top skin panel m^2
+    A_solar = 9 # Area solar array m^2
     A_compartment = 2.64 # Radiating area pressurized compartment m^2
 
     A_contact_boom = 0.00149 # Contact area boom-skin m^2 thin walled 5 cm diameter
-    A_contact_side = 0.025 # Contact area side skin panels m^2 0.005 (t) * 5 (height)
-    A_contact_top = 0.0279 # Contact area top skin panel m^2 0.005 (t) * 0.93 (width panel) * 6 (sides)
+    A_contact_side = 0.0089 # Contact area side skin panels m^2 0.005 (t) * 5 (height)
+    A_contact_top = 0.014 # Contact area top skin panel m^2 0.005 (t) * 0.93 (width panel) * 6 (sides)
     A_contact_support = 0.001 # Contact area compartment support m^2
+    A_side_top = 0.0023
 
     q_sun = 1370 # Solar intensity sun W / m^2
 
-    m_panel = 70 # Mass skin side panel kg 0.005 (t) * 0.93 (w) * 5 (h) * 2710 (rho)
-    m_top = 30 # Mass top skin panel kg
-    m_array = 60 # Mass solar arrays kg each
+    m_panel = 28.4 # Mass skin side panel kg 0.005 (t) * 0.93 (w) * 5 (h) * 2710 (rho)
+    m_top = 19.26 # Mass top skin panel kg
+    m_array = 25.8 # Mass solar arrays kg each
 
     cp_al = 897 # Specific heat capacity aluminium J / kg K
     cp_ga = 340 # Specific heat capacity gallium J / kg K

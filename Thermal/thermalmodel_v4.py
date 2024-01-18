@@ -745,6 +745,7 @@ class ThermalModel:
     def internal_vf(self) -> np.ndarray:
         """
         Calculate the view factor matrix between different nodes.
+        Based on: https://shorturl.at/rvyQ4
 
         Returns:
             numpy.ndarray: View factor matrix.
