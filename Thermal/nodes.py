@@ -31,6 +31,7 @@ BackPanel = Mat("Back Panel", C.k_al, C.cp_al, 0.01, 0.5)
 # CDH
 Leon4FT = Comp("Onboard Computer", 4, Aluminium, 0.1)
 StOBC = Comp("Onboard Computer", 4.8, Aluminium, 0.1)
+SwOBC = Comp("SpaceWire", 3, Aluminium, 0.1)
 
 # Docking
 AmsV5618LA10P = Comp("Docking System", 67.2, Aluminium, 0.1)
@@ -38,6 +39,12 @@ AmsV4118CA01 = Comp("Docking System", 48, Aluminium, 0.1)
 
 # Robotics
 Vispa = Comp("Robotic Arm", 350, Aluminium, 0.1)
+
+# Communications
+Victs = Comp("Antenna", 75, Aluminium, 0.1)
+Swift = Comp("Transmitter", 50, Aluminium, 0.1)
+Para = Comp('Paradigm', 51, Aluminium, 0.1)
+Erz = Comp('ERZ', 120, Aluminium, 0.1)
 
 
 node_data = [
@@ -184,42 +191,42 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[0, 0, 3], [0, 45, 45]], # Corret Center panel
             },
-            {   
-                'key': 14,
-                'name': 'CMG 75-75s by Airbus 2',
-                'area': 1.81,
-                'mass': 69,
-                'material': Cmg,
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
-            },
-            {   
-                'key': 15,
-                'name': 'CMG 75-75s by Airbus 3',
-                'area': 1.81,
-                'mass': 69,
-                'material': Cmg,
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
-            },
-            {   
-                'key': 16,
-                'name': 'CMG 75-75s by Airbus 4',
-                'area': 1.81,
-                'mass': 69,
-                'material': Cmg,
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+            # {   
+            #     'key': 14,
+            #     'name': 'CMG 75-75s by Airbus 2',
+            #     'area': 1.81,
+            #     'mass': 69,
+            #     'material': Cmg,
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+            # },
+            # {   
+            #     'key': 15,
+            #     'name': 'CMG 75-75s by Airbus 3',
+            #     'area': 1.81,
+            #     'mass': 69,
+            #     'material': Cmg,
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+            # },
+            # {   
+            #     'key': 16,
+            #     'name': 'CMG 75-75s by Airbus 4',
+            #     'area': 1.81,
+            #     'mass': 69,
+            #     'material': Cmg,
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
             
-            },
+            # },
             {   
                 'key': 17,
                 'name': 'GNSS-701 by AAC Clyde Space 1',
@@ -229,7 +236,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-1.08, 0, 2.64], [45, 0, 45]], # correct North panel
             },
             {   
                 'key': 18,
@@ -240,7 +247,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[1.08, 0, 2.64], [45, 0, 45]], # correct South panel
             },
             {   
                 'key': 19,
@@ -251,7 +258,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[1.08, -0.05, 2.64], [45, 0, 45]], # correct North panel
             },
             {   
                 'key': 20,
@@ -262,7 +269,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-1.08, 0.05, 2.64], [45, 0, 45]], # correct South panel
             },
             {   
                 'key': 21,
@@ -273,7 +280,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[1.08, 0.15, 2.64], [45, 0, 45]], # correct North panel
             },
             {   
                 'key': 22,
@@ -284,7 +291,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-1.08, -0.15, 2.64], [45, 0, 45]], # correct South panel
             },
             {   
                 'key': 23,
@@ -295,7 +302,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[1.08, 0.25, 2.65], [45, 0, 45]], # correct North panel
             },
             {   
                 'key': 24,
@@ -306,7 +313,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-1.08, -0.25, 2.65], [45, 0, 45]], # correct South panel
             },
             {   
                 'key': 25,
@@ -317,7 +324,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'earth',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[1.12, 0, 4.2], [45, 0, 45]], # correct North panel
             },
             {   
                 'key': 26,
@@ -328,7 +335,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'sun',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-1.12, 0, 4.2], [45, 0, 45]], # correct South panel
             },
             # {   
             #     'key': 27,
@@ -354,14 +361,14 @@ node_data = [
             # },
             {   
                 'key': 29,
-                'name': 'Saft VL51ES 8S2P battery packs 1',
+                'name': 'Saft VL51ES 8S2P battery packs 1', 
                 'area': 0.67,
                 'mass': 22.3,
                 'material': Vl51es, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-0.3, 1.168, 2.71], [45, 45, 0]], # correct Nadir center
             },
             {   
                 'key': 30,
@@ -372,7 +379,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-0.3, 1.168, 2.87], [45, 45, 0]], # correct Nadir center
             },
             {   
                 'key': 31,
@@ -383,7 +390,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-0.3, 1.168, 3.03], [45, 45, 0]], # correct Nadir center
             },
             {   
                 'key': 32,
@@ -394,7 +401,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[0.4, -1.168, 2.77], [45, 45, 0]], # correct Zenith center
             },
             {   
                 'key': 33,
@@ -405,40 +412,40 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[0.4, -1.168, 2.98], [45, 45, 0]], # correct Zenith center
             },
             {   
                 'key': 34,
                 'name': 'AMS V5718L-A10P 1',
-                'area': C.A_solar,
-                'mass': C.m_array,
+                'area': 0.2,
+                'mass': 1.066,
                 'material': AmsV5618LA10P, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[0.1, 0, 4.45], [0, 45, 45]], # correct top panel
             },
             {   
                 'key': 35,
                 'name': 'AMS V5718L-A10P',
-                'area': C.A_solar,
-                'mass': C.m_array,
+                'area': 0.2,
+                'mass': 1.066,
                 'material': AmsV5618LA10P, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-0.1, 0, 4.45], [0, 45, 45]], # correct top panel
             },
             {   
                 'key': 36,
                 'name': 'AMS V4118C-A01',
-                'area': C.A_solar,
-                'mass': C.m_array,
+                'area': 0.1,
+                'mass': 0.409,
                 'material': AmsV4118CA01, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[0, 0, 4.45], [0, 45, 45]], # correct top panel
             },
             {   
                 'key': 37,
@@ -449,7 +456,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[0.54, 0.87, 2.66], [75, 37.76, 20.71]], # correct Nadir-north panel
             },
             {   
                 'key': 38,
@@ -460,7 +467,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-0.54, 0.87, 2.66], [15, 37.76, 20.71]], # correct Nadir-south panel
             },
             {   
                 'key': 39,
@@ -471,7 +478,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-1.08, 0, 2.7], [45, 0, 45]], # correct South panel
             },
             {   
                 'key': 40,
@@ -482,7 +489,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-0.54, -0.87, 2.66], [75, 37.76, 20.71]], # correct Zenith-south panel
             },
             {   
                 'key': 41,
@@ -493,7 +500,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[0.54, -0.87, 2.66], [15, 37.76, 20.71]], # correct Zenith-north panel
             },
             {   
                 'key': 42,
@@ -504,7 +511,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[1.08, 0, 2.7], [45, 0, 45]], # correct North panel
             },
             {   
                 'key': 43,
@@ -515,7 +522,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[0, 0, 3.6], [0, 45, 45]], # correct Pressurised compartment
             },
             {   
                 'key': 44,
@@ -526,7 +533,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[0, 0, 3.9], [0, 0, 45]], # correct Pressurised compartment
             },
             {   
                 'key': 45,
@@ -559,7 +566,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'sun',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[1.15, 0, 2.5], [45, 45, 0]], # correct North panel
             },
             {   
                 'key': 48,
@@ -570,7 +577,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'sun',
-                'position': [[-6, 0, 2.5], [125.75, 90, 35.75]], 
+                'position': [[-1.15, 0, 2.5], [45, 45, 0]], # correct South panel
             },
             {   
                 'key': 49,
@@ -594,11 +601,194 @@ node_data = [
                 'rb': 'internal',
                 'position': [[4.287, 0, 2.225], [45, 45, 0]], # correct 
             },
-            
-            
-            
+            {   
+                'key': 51,
+                'name': 'VICTS Patent Array antenna 1',
+                'area': 0.29,
+                'mass': 20,
+                'material': Victs, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'earth',
+                'position': [[0.57, 0.9, 1.5], [75, 37.76, 20.71]], # correct Nadir-north panel
+            },
+            {   
+                'key': 52,
+                'name': 'VICTS Patent Array antenna 2',
+                'area': 0.29,
+                'mass': 20,
+                'material': Victs, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'earth',
+                'position': [[-0.57, 0.9, 1.5], [15, 37.76, 20.71]], # correct Nadir-south panel
+            },
+            {   
+                'key': 53,
+                'name': 'VICTS Patent Array antenna 3',
+                'area': 0.29,
+                'mass': 20,
+                'material': Victs, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'none',
+                'position': [[-1.2, 0, 1.5], [45, 0, 45]], # correct South panel
+            },
+            {   
+                'key': 54,
+                'name': 'VICTS Patent Array antenna 4',
+                'area': 0.29,
+                'mass': 20,
+                'material': Victs, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'sun',
+                'position': [[-0.57, -0.9, 1.5], [75, 37.76, 20.71]], # correct Zenith-south panel
+            },
+            {   
+                'key': 55,
+                'name': 'VICTS Patent Array antenna 5',
+                'area': 0.29,
+                'mass': 20,
+                'material': Victs, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'sun',
+                'position': [[0.57, -0.9, 1.5], [15, 37.76, 20.71]], # correct Zenith-north panel
+            },
+            {   
+                'key': 56,
+                'name': 'VICTS Patent Array antenna 6',
+                'area': 0.29,
+                'mass': 20,
+                'material': Victs, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'none',
+                'position': [[1.2, 0, 1.5], [45, 0, 45]], # correct North panel
+            },
+            {   
+                'key': 57,
+                'name': 'Swift X KTRX 1',
+                'area': 0.29,
+                'mass': 0.062,
+                'material': Swift, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[0.54, 0.87, 2.8], [75, 37.76, 20.71]], # correct Nadir-north panel
+            },
+            {   
+                'key': 58,
+                'name': 'Swift X KTRX 2',
+                'area': 0.29,
+                'mass': 0.062,
+                'material': Swift, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[-0.54, 0.87, 2.8], [15, 37.76, 20.71]], # correct Nadir-south panel
+            },
+            {   
+                'key': 59,
+                'name': 'Swift X KTRX 3',
+                'area': 0.29,
+                'mass': 0.062,
+                'material': Swift, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[-0.54, -0.87, 2.8], [75, 37.76, 20.71]], # correct Zenith-south panel
+            },
+            {   
+                'key': 60,
+                'name': 'Swift X KTRX 4',
+                'area': 0.29,
+                'mass': 0.062,
+                'material': Swift, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[0.54, -0.87, 2.8], [15, 37.76, 20.71]], # correct Zenith-north panel
+            },
+            {   
+                'key': 62,
+                'name': 'Paradigma Ka Band Transponder 1',
+                'area': 0.24,
+                'mass': 1.6,
+                'material': Para, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[1.08, 0, 3], [45, 0, 45]], # correct North panel
+            },
+            {   
+                'key': 63,
+                'name': 'Paradigma Ka Band Transponder 2',
+                'area': 0.24,
+                'mass': 1.6,
+                'material': Para, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[-1.08, 0, 3], [45, 0, 45]], # correct South panel
+            },
+            {   
+                'key': 64,
+                'name': 'ERZ-HPA-2700-3100-43-C',
+                'area': 0.029,
+                'mass': 1,
+                'material': Para, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[1.08, -0.2, 3], [45, 0, 45]], # correct North panel
+            },
+            {   
+                'key': 65,
+                'name': 'SIRIUS QUADCORE LEON4FT "stacked"',
+                'area': 0.035,
+                'mass': 0.1,
+                'material': Para, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[1.08, 0.2, 3], [45, 0, 45]], # correct North panel
+            },
+            {   
+                'key': 66,
+                'name': 'SIRIUS OBC "stacked"',
+                'area': 0.02,
+                'mass': 0.25,
+                'material': StOBC, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[-1.08, 0.2, 3], [45, 0, 45]], # correct South panel
+            },
+            {   
+                'key': 67,
+                'name': 'GR718B Radiation-Tolerant 18x SpaceWire Router',
+                'area': 0.035,
+                'mass': 0.1,
+                'material': SwOBC, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[-1.08, -0.2, 3], [45, 0, 45]], # correct South panel
+            },
+            {   
+                'key': 68,
+                'name': 'Center panel',
+                'area': 0.035,
+                'mass': 0.1,
+                'material': Aluminium, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[0, 0, 2.63], [0, 45, 45]], # correct Center panel supporting components
+            }
 
-            
 ]
 
 # Define neighbor relationships
