@@ -236,7 +236,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-1.08, 0, 2.64], [45, 0, 45]], # correct North panel
+                'position': [[1.08, 0, 2.64], [45, 0, 45]], # correct North panel
             },
             {   
                 'key': 18,
@@ -247,7 +247,7 @@ node_data = [
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[1.08, 0, 2.64], [45, 0, 45]], # correct South panel
+                'position': [[-1.08, 0, 2.64], [45, 0, 45]], # correct South panel
             },
             {   
                 'key': 19,
@@ -515,7 +515,7 @@ node_data = [
             },
             {   
                 'key': 43,
-                'name': 'De Wit MW1000-DD24-L',
+                'name': 'De Wit MW1000-DD24-L 1',
                 'area': 0.11,
                 'mass': 1.9,
                 'material': Smrt2805D, 
@@ -526,7 +526,7 @@ node_data = [
             },
             {   
                 'key': 44,
-                'name': 'De Wit MW1000-DD24-L',
+                'name': 'De Wit MW1000-DD24-L 2',
                 'area': 0.11,
                 'mass': 1.9,
                 'material': Smrt2805D, 
@@ -787,7 +787,18 @@ node_data = [
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[0, 0, 2.63], [0, 45, 45]], # correct Center panel supporting components
-            }
+            },
+            {   
+                'key': 69,
+                'name': 'Pressurised compartement',
+                'area': 1.8,
+                'mass': 40,
+                'material': Aluminium, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[0, 0, 3], [0, 45, 45]], # correct Center panel supporting components
+            },
 
 ]
 
@@ -815,8 +826,55 @@ neighbor_mapping = {
     11: [(1, 0.24)], # Vispa Nadir
     12: [(4, 0.24)], # Vispa Zenith
     # ADCS Contacts
-
-
+    13: [(68, 0.314)], # CMG 75-75s by Airbus 1
+    17: [(6, 0.01)], # GNSS-701 by AAC Clyde Space 1
+    18: [(3, 0.01)], # GNSS-701 by AAC Clyde Space 2
+    19: [(6, 0.01)], # 3313 Series by Dytran Instruments 1
+    20: [(3, 0.01)], # 3313 Series by Dytran Instruments 2
+    21: [(6, 0.01)], # STIM210 by Sensonor AS 1
+    22: [(3, 0.01)], # STIM210 by Sensonor AS 2
+    23: [(6, 0.01)], # Mag-3 by AAC Clyde Space 1
+    24: [(3, 0.01)], # Mag-3 by AAC Clyde Space 2
+    25: [(6, 0.01)], # ST400 Startracker by AAC Clyde Space 1
+    26: [(3, 0.01)], # ST400 Startracker by AAC Clyde Space 2
+    # EPS Contacts
+    29: [(1, 0.02), (2, 0.02), (68, 0.14)], # Saft VL51ES 8S2P battery packs 1
+    30: [(1, 0.02), (2, 0.02), (29, 0.14)], # Saft VL51ES 8S2P battery packs 2
+    31: [(1, 0.02), (2, 0.02), (30, 0.14)], # Saft VL51ES 8S2P battery packs 3
+    32: [(4, 0.04), (5, 0.04), (68, 0.23)], # Airbus EVO PCDU 1
+    33: [(4, 0.04), (5, 0.04), (32, 0.23)], # Airbus EVO PCDU 2
+    37: [(1, 0.004)], # Interpoint SMRT2805D 1
+    38: [(2, 0.004)], # Interpoint SMRT2805D 2
+    39: [(3, 0.004)], # Interpoint SMRT2805D 3
+    40: [(4, 0.004)], # Interpoint SMRT2805D 4
+    41: [(5, 0.004)], # Interpoint SMRT2805D 5
+    42: [(6, 0.004)], # Interpoint SMRT2805D 6
+    43: [(69, 0.04)], # De Wit MW1000-DD24-L 1
+    44: [(69, 0.04)], # De Wit MW1000-DD24-L 2
+    # Docking Contacts
+    34: [(7, 0.01)], # AMS V5718L-A10P 1
+    35: [(7, 0.01)], # AMS V5718L-A10P 2
+    36: [(7, 0.01)], # AMS V4118C-A01
+    # Communication Contacts
+    51: [(1, 0.3)], # VICTS Patent Array antenna 1
+    52: [(2, 0.3)], # VICTS Patent Array antenna 2
+    53: [(3, 0.3)], # VICTS Patent Array antenna 3
+    54: [(4, 0.3)], # VICTS Patent Array antenna 4
+    55: [(5, 0.3)], # VICTS Patent Array antenna 5
+    56: [(6, 0.3)], # VICTS Patent Array antenna 6
+    57: [(1, 0.1)], # Swift X KTRX 1
+    58: [(2, 0.1)], # Swift X KTRX 2
+    59: [(4, 0.1)], # Swift X KTRX 3
+    60: [(5, 0.1)], # Swift X KTRX 4
+    62: [(6, 0.1)], # Paradigma Ka Band Transponder 1
+    63: [(3, 0.1)], # Paradigma Ka Band Transponder 2
+    64: [(6, 0.1)], # ERZ-HPA-2700-3100-43-C
+    65: [(6, 0.1)], # SIRIUS QUADCORE LEON4FT "stacked"
+    66: [(3, 0.1)], # SIRIUS OBC "stacked"
+    67: [(3, 0.1)], # GR718B Radiation-Tolerant 18x SpaceWire Router
+    # Miscellaneous Contacts
+    68: [(1, 0.0024), (2, 0.0024), (3, 0.0024), (4, 0.0024), (5, 0.0024), (6, 0.0024)], # Center panel
+    69: [(1, 0.0004), (2, 0.0004), (3, 0.0004), (4, 0.0004), (5, 0.0004), (6, 0.0004), (7, 0.28), (8, 0.28)], # Pressurised compartment
 
     # Continue for other nodes if needed
 }
@@ -835,10 +893,26 @@ def construct_nodes(node_data=node_data, neighbor_mapping=neighbor_mapping):
     """
     # Construct nodes
     nodes = [Node(**data) for data in node_data]
-
+    # print(neighbor_mapping.items())
     # Add neighbors based on mapping
-    for node_index, neighbors in neighbor_mapping.items():
-        for neighbor_index, contact_area in neighbors:
-            nodes[node_index-1].add_neighbor(nodes[neighbor_index-1], contact_area)
+    # for node_index, neighbors in neighbor_mapping.items():
+    #     for neighbor_index, contact_area in neighbors:
+    #         print(f'Node: {nodes[node_index-1] }')
+    #         print(f'Neighbor index: {neighbor_index - 1}')
+    #         print(f'Neighbor: {nodes[neighbor_index - 1]}')
+    #         nodes[node_index-1].add_neighbor(nodes[neighbor_index-1], contact_area)
+
+    # return nodes
+    for node_key, neighbors in neighbor_mapping.items():
+        current_node = nodes[node_key - 1]
+        print(f'Node: {current_node}')
+        for neighbor_key, contact_area in neighbors:
+            neighbor_node = nodes[neighbor_key - 1]
+            print(f'Neighbor key: {neighbor_key}')
+            print(f'Neighbor: {neighbor_node}')
+            current_node.add_neighbor(neighbor_node, contact_area)
 
     return nodes
+
+
+construct_nodes()

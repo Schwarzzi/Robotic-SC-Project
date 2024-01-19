@@ -16,7 +16,7 @@ def main():
     tm = TM4(nodes)
     beta_range = np.linspace(0, 90, 3)
     h_range = np.linspace(200, 2000, 5)
-    time_range = np.linspace(0, 30000, 1000)
+    time_range = np.linspace(0, 30000, 100)
 
     plot_3d(tm, beta_range, h_range, time_range)
 
