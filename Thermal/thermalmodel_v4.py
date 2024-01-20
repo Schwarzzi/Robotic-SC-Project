@@ -894,13 +894,14 @@ class ThermalModel:
                     temperature_differences[i, j] = temperatures[j] - temperatures[i]
 
         with np.errstate(divide='ignore', invalid='ignore'):
-            heat_transfer_matrix = np.where(self.l_matrix != 0, self.k_matrix * temperature_differences * self.a_matrix / self.l_matrix, 0)
+            heat_transfer_matrix = np.where(self.l_matrix != 0, self.k_matrix * temperature_differences * self.a_matrix, 0) #/ self.l_matrix, 0)
 
         q_internal_conducted = np.sum(heat_transfer_matrix, axis=1)
 
         temp_diff = temperatures[:, np.newaxis] ** 4 - temperatures[np.newaxis, :] ** 4
         # Update q_internal_radiated to use the new emissivities from MLI where applicable
-        q_internal_radiated = np.zeros_like(q_internal_conducted)# np.sum(emissivities[:, np.newaxis] * C.sigma * temp_diff * areas[:, np.newaxis] * self.vf_matrix, axis=1)
+        # q_internal_radiated = np.zeros_like(q_internal_conducted)
+        q_internal_radiated = np.sum(emissivities[:, np.newaxis] * C.sigma * temp_diff * areas[:, np.newaxis] * self.vf_matrix, axis=1)
 
         radiating_bodies = np.array([node.radiating_body for node in self.nodes.values()])
         is_radiating = np.isin(radiating_bodies, ['earth', 'sun'])

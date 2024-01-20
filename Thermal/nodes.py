@@ -46,6 +46,9 @@ Swift = Comp("Transmitter", 50, Aluminium, 0.1)
 Para = Comp('Paradigm', 51, Aluminium, 0.1)
 Erz = Comp('ERZ', 120, Aluminium, 0.1)
 
+# Thermal
+Rad = Comp("Radiators", -200, Aluminium, 1)
+Heatpipe = Mat("Heatpipe", 10000, C.cp_al, 0.9, 0.3)
 
 node_data = [
             {
@@ -799,6 +802,31 @@ node_data = [
                 'rb': 'internal',
                 'position': [[0, 0, 3], [0, 45, 45]], # correct Center panel supporting components
             },
+            {   
+                'key': 70,
+                'name': 'Radiator North panel',
+                'area': 9,
+                'mass': 10,
+                'material': Rad, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[4.287, 0.3, 2.225], [45, 45, 0]], # correct Center panel supporting components
+            },
+            {   
+                'key': 71,
+                'name': 'Radiator South panel',
+                'area': 9,
+                'mass': 10,
+                'material': Rad, 
+                'temperature': 293.15,
+                'gamma': 0,
+                'rb': 'internal',
+                'position': [[4.287, -0.3, 2.225], [45, 45, 0]], # correct Center panel supporting components
+            },
+            
+            
+
 
 ]
 
