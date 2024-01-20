@@ -903,16 +903,14 @@ def construct_nodes(node_data=node_data, neighbor_mapping=neighbor_mapping):
     #         nodes[node_index-1].add_neighbor(nodes[neighbor_index-1], contact_area)
 
     # return nodes
+    nodes_dict = {node.key: node for node in nodes}
     for node_key, neighbors in neighbor_mapping.items():
-        current_node = nodes[node_key - 1]
-        print(f'Node: {current_node}')
-        for neighbor_key, contact_area in neighbors:
-            neighbor_node = nodes[neighbor_key - 1]
-            print(f'Neighbor key: {neighbor_key}')
-            print(f'Neighbor: {neighbor_node}')
+        current_node = nodes_dict[node_key]
+    
+        for neighbor_info in neighbors:
+            neighbor_key, contact_area = neighbor_info
+            neighbor_node = nodes_dict[neighbor_key]
             current_node.add_neighbor(neighbor_node, contact_area)
 
     return nodes
 
-
-construct_nodes()
