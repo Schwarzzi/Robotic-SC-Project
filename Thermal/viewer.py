@@ -86,12 +86,13 @@ def plot_3d(tm, beta_range, h_range, time_range):
         ax.clear()
         X, Y = np.meshgrid(time_range, beta_range)
         Z = temperatures[:, h_index, :, node_index]
-        ax.plot_surface(X, Y, Z, cmap='viridis', vmin=global_min_temp, vmax=global_max_temp)
+        # ax.plot_surface(X, Y, Z, cmap='viridis', vmin=global_min_temp, vmax=global_max_temp)
+        ax.plot_surface(X, Y, Z, cmap='viridis')
         ax.set_title(tm.nodes[node_keys[node_index]].name)
         ax.set_xlabel('Time (s)')
         ax.set_ylabel('Beta Angle (deg)')
         ax.set_zlabel('Temperature (K)')
-        ax.set_zlim(global_min_temp, global_max_temp)
+        # ax.set_zlim(global_min_temp, global_max_temp)
 
     for i in range(num_nodes):
         fig = plt.figure(figsize=(10, 6))

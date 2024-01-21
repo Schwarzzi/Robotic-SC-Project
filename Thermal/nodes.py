@@ -12,70 +12,70 @@ Aluminium = Mat("Aluminium", 237, 897, 0.9, 0.3)
 Steel = Mat("Steel", 50, 500, 0.9, 0.3)
 
 # ADCS
-# Cmg = Comp("Control Moment Gyroscope", 640, Aluminium, 0.1)
-# Gnss = Comp("GNSS", 4.4, Aluminium, 0.1)
-# Accelerometer = Comp("Accelerometer", 1.12, Aluminium, 0.1)
-# Stim210 = Comp('Gyroscope', 3, Aluminium, 0.1)
-# Mag3 = Comp('Magnetometer', 1.7, Aluminium, 0.1)
-# St400 = Comp('Star Tracker', 2, Aluminium, 0.1)
+Cmg = Comp("Control Moment Gyroscope", 640, Aluminium, 0.1)
+Gnss = Comp("GNSS", 4.4, Aluminium, 0.1)
+Accelerometer = Comp("Accelerometer", 1.12, Aluminium, 0.1)
+Stim210 = Comp('Gyroscope', 3, Aluminium, 0.1)
+Mag3 = Comp('Magnetometer', 1.7, Aluminium, 0.1)
+St400 = Comp('Star Tracker', 2, Aluminium, 0.1)
 # standby
-Cmg = Comp("Control Moment Gyroscope", 0, Aluminium, 0.1)
-Gnss = Comp("GNSS", 0, Aluminium, 0.1)
-Accelerometer = Comp("Accelerometer", 0, Aluminium, 0.1)
-Stim210 = Comp('Gyroscope', 0, Aluminium, 0.1)
-Mag3 = Comp('Magnetometer', 0, Aluminium, 0.1)
-St400 = Comp('Star Tracker', 0, Aluminium, 0.1)
+# Cmg = Comp("Control Moment Gyroscope", 0, Aluminium, 0.1)
+# Gnss = Comp("GNSS", 0, Aluminium, 0.1)
+# Accelerometer = Comp("Accelerometer", 0, Aluminium, 0.1)
+# Stim210 = Comp('Gyroscope', 0, Aluminium, 0.1)
+# Mag3 = Comp('Magnetometer', 0, Aluminium, 0.1)
+# St400 = Comp('Star Tracker', 0, Aluminium, 0.1)
 
 # EPS
-# GalliumArsenide = Mat("Gallium Arsenide", 40, 340, 0.8, 0.8)
-# Vl51es = Comp("Batteries", 1958, Aluminium, 0.01) # Check efficiency
-# EvoPCDU = Comp("Power Control and Distribution Unit", 30, Aluminium, 0.1)
-# Smrt2805D = Comp("DC-DC Converter", 30, Aluminium, 0.1)	
-# Mw1000DD24L = Comp("DC-DC Converter", 1000, Aluminium, 0.12)
-# FrontPanel = Mat("Front Panel", C.k_ga, C.cp_ga, 0.899, 0.92)
-# BackPanel = Mat("Back Panel", C.k_al, C.cp_al, 0.01, 0.5)
-# standby
 GalliumArsenide = Mat("Gallium Arsenide", 40, 340, 0.8, 0.8)
-Vl51es = Comp("Batteries", 0, Aluminium, 0.01) # Check efficiency
-EvoPCDU = Comp("Power Control and Distribution Unit", 0, Aluminium, 0.1)
-Smrt2805D = Comp("DC-DC Converter", 0, Aluminium, 0.1)	
-Mw1000DD24L = Comp("DC-DC Converter", 0, Aluminium, 0.12)
+Vl51es = Comp("Batteries", 1958, Aluminium, 0.01) # Check efficiency
+EvoPCDU = Comp("Power Control and Distribution Unit", 30, Aluminium, 0.1)
+Smrt2805D = Comp("DC-DC Converter", 30, Aluminium, 0.1)	
+Mw1000DD24L = Comp("DC-DC Converter", 1000, Aluminium, 0.12)
 FrontPanel = Mat("Front Panel", C.k_ga, C.cp_ga, 0.899, 0.92)
 BackPanel = Mat("Back Panel", C.k_al, C.cp_al, 0.01, 0.5)
+# standby
+# GalliumArsenide = Mat("Gallium Arsenide", 40, 340, 0.8, 0.8)
+# Vl51es = Comp("Batteries", 0, Aluminium, 0.01) # Check efficiency
+# EvoPCDU = Comp("Power Control and Distribution Unit", 0, Aluminium, 0.1)
+# Smrt2805D = Comp("DC-DC Converter", 0, Aluminium, 0.1)	
+# Mw1000DD24L = Comp("DC-DC Converter", 0, Aluminium, 0.12)
+# FrontPanel = Mat("Front Panel", C.k_ga, C.cp_ga, 0.899, 0.92)
+# BackPanel = Mat("Back Panel", C.k_al, C.cp_al, 0.01, 0.5)
 
 # CDH
-# Leon4FT = Comp("Onboard Computer", 4, Aluminium, 0.1)
-# StOBC = Comp("Onboard Computer", 4.8, Aluminium, 0.1)
-# SwOBC = Comp("SpaceWire", 3, Aluminium, 0.1)
-# standby
 Leon4FT = Comp("Onboard Computer", 4, Aluminium, 0.1)
 StOBC = Comp("Onboard Computer", 4.8, Aluminium, 0.1)
 SwOBC = Comp("SpaceWire", 3, Aluminium, 0.1)
+# standby
+# Leon4FT = Comp("Onboard Computer", 4, Aluminium, 0.1)
+# StOBC = Comp("Onboard Computer", 4.8, Aluminium, 0.1)
+# SwOBC = Comp("SpaceWire", 3, Aluminium, 0.1)
 
 # Docking
-# AmsV5618LA10P = Comp("Docking System", 67.2, Aluminium, 0.1)
-# AmsV4118CA01 = Comp("Docking System", 48, Aluminium, 0.1)
+AmsV5618LA10P = Comp("Docking System", 67.2, Aluminium, 0.1)
+AmsV4118CA01 = Comp("Docking System", 48, Aluminium, 0.1)
 # standby
-AmsV5618LA10P = Comp("Docking System", 0, Aluminium, 0.1)
-AmsV4118CA01 = Comp("Docking System", 0, Aluminium, 0.1)
+# AmsV5618LA10P = Comp("Docking System", 0, Aluminium, 0.1)
+# AmsV4118CA01 = Comp("Docking System", 0, Aluminium, 0.1)
 
 # Robotics
 # Vispa = Comp("Robotic Arm", 350, Aluminium, 0.1)
 # nominal
-# Vispa = Comp("Robotic Arm", 80, Aluminium, 0.1)
+Vispa = Comp("Robotic Arm", 80, Aluminium, 0.1)
 # standby
-Vispa = Comp("Robotic Arm", 0, Aluminium, 0.1)
+# Vispa = Comp("Robotic Arm", 0, Aluminium, 0.1)
 
 # Communications
-# Victs = Comp("Antenna", 75, Aluminium, 0.1)
-# Swift = Comp("Transmitter", 50, Aluminium, 0.1)
-# Para = Comp('Paradigm', 51, Aluminium, 0.1)
-# Erz = Comp('ERZ', 120, Aluminium, 0.1)
+Victs = Comp("Antenna", 75, Aluminium, 0.1)
+Swift = Comp("Transmitter", 50, Aluminium, 0.1)
+Para = Comp('Paradigm', 51, Aluminium, 0.1)
+Erz = Comp('ERZ', 120, Aluminium, 0.1)
 # standby
-Victs = Comp("Antenna", 0, Aluminium, 0.1)
-Swift = Comp("Transmitter", 0, Aluminium, 0.1)
-Para = Comp('Paradigm', 0, Aluminium, 0.1)
-Erz = Comp('ERZ', 0, Aluminium, 0.1)
+# Victs = Comp("Antenna", 0, Aluminium, 0.1)
+# Swift = Comp("Transmitter", 0, Aluminium, 0.1)
+# Para = Comp('Paradigm', 0, Aluminium, 0.1)
+# Erz = Comp('ERZ', 0, Aluminium, 0.1)
 
 # Thermal
 Rad = Comp("Radiators", -200, Aluminium, 1)
@@ -833,28 +833,28 @@ node_data = [
                 'rb': 'internal',
                 'position': [[0, 0, 3], [0, 45, 45]], # correct Center panel supporting components
             },
-            {   
-                'key': 70,
-                'name': 'Radiator North panel',
-                'area': 9,
-                'mass': 10,
-                'material': Rad, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[4.287, 0.3, 2.225], [45, 45, 0]], # correct Center panel supporting components
-            },
-            {   
-                'key': 71,
-                'name': 'Radiator South panel',
-                'area': 9,
-                'mass': 10,
-                'material': Rad, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[4.287, -0.3, 2.225], [45, 45, 0]], # correct Center panel supporting components
-            },
+            # {   
+            #     'key': 70,
+            #     'name': 'Radiator North panel',
+            #     'area': 9,
+            #     'mass': 10,
+            #     'material': Rad, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[4.287, 0.3, 2.225], [45, 45, 0]], # correct Center panel supporting components
+            # },
+            # {   
+            #     'key': 71,
+            #     'name': 'Radiator South panel',
+            #     'area': 9,
+            #     'mass': 10,
+            #     'material': Rad, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[4.287, -0.3, 2.225], [45, 45, 0]], # correct Center panel supporting components
+            # },
 
 ]
 

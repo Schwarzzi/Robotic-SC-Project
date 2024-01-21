@@ -912,12 +912,13 @@ class ThermalModel:
                 if i != j:
                     temperature_differences[i, j] = temperatures[j] - temperatures[i]
 
-        # with np.errstate(divide='ignore', invalid='ignore'):
-        #     heat_transfer_matrix = np.where(self.l_matrix != 0, self.k_matrix * temperature_differences * self.a_matrix, 0) #/ self.l_matrix, 0)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            # heat_transfer_matrix = np.where(self.l_matrix != 0, self.k_matrix * temperature_differences * self.a_matrix, 0) #/ self.l_matrix, 0)
+            heat_transfer_matrix = np.where(self.l_matrix != 0, self.k_matrix * temperature_differences * self.a_matrix / self.l_matrix, 0) 
 
-        # q_internal_conducted = np.sum(heat_transfer_matrix, axis=1)
-        heat_transfer_matrix = self.k_matrix * temperature_differences * self.a_matrix
         q_internal_conducted = np.sum(heat_transfer_matrix, axis=1)
+        # heat_transfer_matrix = self.k_matrix * temperature_differences * self.a_matrix
+        # q_internal_conducted = np.sum(heat_transfer_matrix, axis=1)
 
         temp_diff = temperatures[:, np.newaxis] ** 4 - temperatures[np.newaxis, :] ** 4
         # Update q_internal_radiated to use the new emissivities from MLI where applicable
