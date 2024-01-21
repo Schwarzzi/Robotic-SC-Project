@@ -263,114 +263,114 @@ node_data = [
             # },
             {   
                 'key': 17,
-                'name': 'GNSS-701 by AAC Clyde Space 1',
-                'area': 0.2, # ?
-                'mass': 0.32,
+                'name': 'GNSS-701 by AAC Clyde Space 1 "stacked"',
+                'area': 0.05, # ?
+                'mass': 0.64,
                 'material': Gnss,
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[1.08, 0, 2.64], [45, 0, 45]], # correct North panel
             },
-            {   
-                'key': 18,
-                'name': 'GNSS-701 by AAC Clyde Space 2',
-                'area': 0.2, # ?
-                'mass': 0.32,
-                'material': Gnss,
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-1.08, 0, 2.64], [45, 0, 45]], # correct South panel
-            },
+            # {   
+            #     'key': 18,
+            #     'name': 'GNSS-701 by AAC Clyde Space 2',
+            #     'area': 0.2, # ?
+            #     'mass': 0.32,
+            #     'material': Gnss,
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-1.08, 0, 2.64], [45, 0, 45]], # correct South panel
+            # },
             {   
                 'key': 19,
-                'name': '3313 Series by Dytran Instruments 1',
-                'area': 0.1, # ?
-                'mass': 0.008,
+                'name': '3313 Series by Dytran Instruments 1 "stacked"',
+                'area': 0.05, # ?
+                'mass': 0.016,
                 'material': Accelerometer,
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[1.08, -0.05, 2.64], [45, 0, 45]], # correct North panel
             },
-            {   
-                'key': 20,
-                'name': '3313 Series by Dytran Instruments 2',
-                'area': 0.1, # ?
-                'mass': 0.008,
-                'material': Accelerometer,
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-1.08, 0.05, 2.64], [45, 0, 45]], # correct South panel
-            },
+            # {   
+            #     'key': 20,
+            #     'name': '3313 Series by Dytran Instruments 2',
+            #     'area': 0.1, # ?
+            #     'mass': 0.008,
+            #     'material': Accelerometer,
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-1.08, 0.05, 2.64], [45, 0, 45]], # correct South panel
+            # },
             {   
                 'key': 21,
-                'name': 'STIM210 by Sensonor AS 1',
-                'area': 0.2,
-                'mass': 0.104,
+                'name': 'STIM210 by Sensonor AS 1 "stacked"',
+                'area': 0.08,
+                'mass': 0.208,
                 'material': Stim210,
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[1.08, 0.15, 2.64], [45, 0, 45]], # correct North panel
             },
-            {   
-                'key': 22,
-                'name': 'STIM210 by Sensonor AS 2',
-                'area': 0.2,
-                'mass': 0.104,
-                'material': Stim210,
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-1.08, -0.15, 2.64], [45, 0, 45]], # correct South panel
-            },
+            # {   
+            #     'key': 22,
+            #     'name': 'STIM210 by Sensonor AS 2',
+            #     'area': 0.2,
+            #     'mass': 0.104,
+            #     'material': Stim210,
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-1.08, -0.15, 2.64], [45, 0, 45]], # correct South panel
+            # },
             {   
                 'key': 23,
-                'name': 'Mag-3 by AAC Clyde Space 1',
-                'area': 0.4,
-                'mass': 0.2,
+                'name': 'Mag-3 by AAC Clyde Space 1 "stacked"',
+                'area': 0.08,
+                'mass': 0.4,
                 'material': Mag3,
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[1.08, 0.25, 2.65], [45, 0, 45]], # correct North panel
             },
-            {   
-                'key': 24,
-                'name': 'Mag-3 by AAC Clyde Space 2',
-                'area': 0.4,
-                'mass': 0.2,
-                'material': Mag3,
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-1.08, -0.25, 2.65], [45, 0, 45]], # correct South panel
-            },
+            # {   
+            #     'key': 24,
+            #     'name': 'Mag-3 by AAC Clyde Space 2',
+            #     'area': 0.4,
+            #     'mass': 0.2,
+            #     'material': Mag3,
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-1.08, -0.25, 2.65], [45, 0, 45]], # correct South panel
+            # },
             {   
                 'key': 25,
-                'name': 'ST400 Startracker by AAC Clyde Space 1',
-                'area': 0.4,
-                'mass': 0.560,
+                'name': 'ST400 Startracker by AAC Clyde Space 1 "stacked"',
+                'area': 0.1,
+                'mass': 1.12,
                 'material': St400,
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'earth',
                 'position': [[1.12, 0, 4.2], [45, 0, 45]], # correct North panel
             },
-            {   
-                'key': 26,
-                'name': 'ST400 Startracker by AAC Clyde Space 2',
-                'area': 0.4,
-                'mass': 0.560,
-                'material': St400,
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'sun',
-                'position': [[-1.12, 0, 4.2], [45, 0, 45]], # correct South panel
-            },
+            # {   
+            #     'key': 26,
+            #     'name': 'ST400 Startracker by AAC Clyde Space 2',
+            #     'area': 0.4,
+            #     'mass': 0.560,
+            #     'material': St400,
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'sun',
+            #     'position': [[-1.12, 0, 4.2], [45, 0, 45]], # correct South panel
+            # },
             # {   
             #     'key': 27,
             #     'name': 'ThalesAlenia Space COSMO-SkyMed solar panels North',
@@ -870,7 +870,7 @@ neighbor_mapping = {
     7: [(1, C.A_side_top), (2, C.A_side_top), (3, C.A_side_top), (4, C.A_side_top), (5, C.A_side_top), (6, C.A_side_top)], # Velocity
     8: [(1, C.A_side_top), (2, C.A_side_top), (3, C.A_side_top), (4, C.A_side_top), (5, C.A_side_top), (6, C.A_side_top)], # Negative-Velocity
     # Solar Array Contacts 
-    9: [(49, 1)], # [(50, 1)], # North Solar Array Front
+    9: [(45, 1)], # [(50, 1)], # North Solar Array Front
     10: [(46, 1)], # [(49, 1)], # South Solar Array Front
     45: [(9, 1)], # [(50, 1)], # North Solar Array Back
     46: [(10, 1)], # South Solar Array Back
@@ -884,15 +884,15 @@ neighbor_mapping = {
     # ADCS Contacts
     13: [(68, 0.314)], # CMG 75-75s by Airbus 1
     17: [(6, 0.01)], # GNSS-701 by AAC Clyde Space 1
-    18: [(3, 0.01)], # GNSS-701 by AAC Clyde Space 2
+    # 18: [(3, 0.01)], # GNSS-701 by AAC Clyde Space 2
     19: [(6, 0.01)], # 3313 Series by Dytran Instruments 1
-    20: [(3, 0.01)], # 3313 Series by Dytran Instruments 2
+    # 20: [(3, 0.01)], # 3313 Series by Dytran Instruments 2
     21: [(6, 0.01)], # STIM210 by Sensonor AS 1
-    22: [(3, 0.01)], # STIM210 by Sensonor AS 2
+    # 22: [(3, 0.01)], # STIM210 by Sensonor AS 2
     23: [(6, 0.01)], # Mag-3 by AAC Clyde Space 1
-    24: [(3, 0.01)], # Mag-3 by AAC Clyde Space 2
+    # 24: [(3, 0.01)], # Mag-3 by AAC Clyde Space 2
     25: [(6, 0.01)], # ST400 Startracker by AAC Clyde Space 1
-    26: [(3, 0.01)], # ST400 Startracker by AAC Clyde Space 2
+    # 26: [(3, 0.01)], # ST400 Startracker by AAC Clyde Space 2
     # EPS Contacts
     29: [(1, 0.02), (2, 0.02), (68, 0.14)], # Saft VL51ES 8S2P battery packs 1
     # 30: [(1, 0.02), (2, 0.02), (29, 0.14)], # Saft VL51ES 8S2P battery packs 2
