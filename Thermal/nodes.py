@@ -12,39 +12,70 @@ Aluminium = Mat("Aluminium", 237, 897, 0.9, 0.3)
 Steel = Mat("Steel", 50, 500, 0.9, 0.3)
 
 # ADCS
-Cmg = Comp("Control Moment Gyroscope", 640, Aluminium, 0.1)
-Gnss = Comp("GNSS", 4.4, Aluminium, 0.1)
-Accelerometer = Comp("Accelerometer", 1.12, Aluminium, 0.1)
-Stim210 = Comp('Gyroscope', 3, Aluminium, 0.1)
-Mag3 = Comp('Magnetometer', 1.7, Aluminium, 0.1)
-St400 = Comp('Star Tracker', 2, Aluminium, 0.1)
+# Cmg = Comp("Control Moment Gyroscope", 640, Aluminium, 0.1)
+# Gnss = Comp("GNSS", 4.4, Aluminium, 0.1)
+# Accelerometer = Comp("Accelerometer", 1.12, Aluminium, 0.1)
+# Stim210 = Comp('Gyroscope', 3, Aluminium, 0.1)
+# Mag3 = Comp('Magnetometer', 1.7, Aluminium, 0.1)
+# St400 = Comp('Star Tracker', 2, Aluminium, 0.1)
+# standby
+Cmg = Comp("Control Moment Gyroscope", 0, Aluminium, 0.1)
+Gnss = Comp("GNSS", 0, Aluminium, 0.1)
+Accelerometer = Comp("Accelerometer", 0, Aluminium, 0.1)
+Stim210 = Comp('Gyroscope', 0, Aluminium, 0.1)
+Mag3 = Comp('Magnetometer', 0, Aluminium, 0.1)
+St400 = Comp('Star Tracker', 0, Aluminium, 0.1)
 
 # EPS
+# GalliumArsenide = Mat("Gallium Arsenide", 40, 340, 0.8, 0.8)
+# Vl51es = Comp("Batteries", 1958, Aluminium, 0.01) # Check efficiency
+# EvoPCDU = Comp("Power Control and Distribution Unit", 30, Aluminium, 0.1)
+# Smrt2805D = Comp("DC-DC Converter", 30, Aluminium, 0.1)	
+# Mw1000DD24L = Comp("DC-DC Converter", 1000, Aluminium, 0.12)
+# FrontPanel = Mat("Front Panel", C.k_ga, C.cp_ga, 0.899, 0.92)
+# BackPanel = Mat("Back Panel", C.k_al, C.cp_al, 0.01, 0.5)
+# standby
 GalliumArsenide = Mat("Gallium Arsenide", 40, 340, 0.8, 0.8)
-Vl51es = Comp("Batteries", 1958, Aluminium, 0.01) # Check efficiency
-EvoPCDU = Comp("Power Control and Distribution Unit", 30, Aluminium, 0.1)
-Smrt2805D = Comp("DC-DC Converter", 30, Aluminium, 0.1)	
-Mw1000DD24L = Comp("DC-DC Converter", 1000, Aluminium, 0.12)
+Vl51es = Comp("Batteries", 0, Aluminium, 0.01) # Check efficiency
+EvoPCDU = Comp("Power Control and Distribution Unit", 0, Aluminium, 0.1)
+Smrt2805D = Comp("DC-DC Converter", 0, Aluminium, 0.1)	
+Mw1000DD24L = Comp("DC-DC Converter", 0, Aluminium, 0.12)
 FrontPanel = Mat("Front Panel", C.k_ga, C.cp_ga, 0.899, 0.92)
 BackPanel = Mat("Back Panel", C.k_al, C.cp_al, 0.01, 0.5)
 
 # CDH
+# Leon4FT = Comp("Onboard Computer", 4, Aluminium, 0.1)
+# StOBC = Comp("Onboard Computer", 4.8, Aluminium, 0.1)
+# SwOBC = Comp("SpaceWire", 3, Aluminium, 0.1)
+# standby
 Leon4FT = Comp("Onboard Computer", 4, Aluminium, 0.1)
 StOBC = Comp("Onboard Computer", 4.8, Aluminium, 0.1)
 SwOBC = Comp("SpaceWire", 3, Aluminium, 0.1)
 
 # Docking
-AmsV5618LA10P = Comp("Docking System", 67.2, Aluminium, 0.1)
-AmsV4118CA01 = Comp("Docking System", 48, Aluminium, 0.1)
+# AmsV5618LA10P = Comp("Docking System", 67.2, Aluminium, 0.1)
+# AmsV4118CA01 = Comp("Docking System", 48, Aluminium, 0.1)
+# standby
+AmsV5618LA10P = Comp("Docking System", 0, Aluminium, 0.1)
+AmsV4118CA01 = Comp("Docking System", 0, Aluminium, 0.1)
 
 # Robotics
-Vispa = Comp("Robotic Arm", 350, Aluminium, 0.1)
+# Vispa = Comp("Robotic Arm", 350, Aluminium, 0.1)
+# nominal
+# Vispa = Comp("Robotic Arm", 80, Aluminium, 0.1)
+# standby
+Vispa = Comp("Robotic Arm", 0, Aluminium, 0.1)
 
 # Communications
-Victs = Comp("Antenna", 75, Aluminium, 0.1)
-Swift = Comp("Transmitter", 50, Aluminium, 0.1)
-Para = Comp('Paradigm', 51, Aluminium, 0.1)
-Erz = Comp('ERZ', 120, Aluminium, 0.1)
+# Victs = Comp("Antenna", 75, Aluminium, 0.1)
+# Swift = Comp("Transmitter", 50, Aluminium, 0.1)
+# Para = Comp('Paradigm', 51, Aluminium, 0.1)
+# Erz = Comp('ERZ', 120, Aluminium, 0.1)
+# standby
+Victs = Comp("Antenna", 0, Aluminium, 0.1)
+Swift = Comp("Transmitter", 0, Aluminium, 0.1)
+Para = Comp('Paradigm', 0, Aluminium, 0.1)
+Erz = Comp('ERZ', 0, Aluminium, 0.1)
 
 # Thermal
 Rad = Comp("Radiators", -200, Aluminium, 1)
@@ -364,180 +395,180 @@ node_data = [
             # },
             {   
                 'key': 29,
-                'name': 'Saft VL51ES 8S2P battery packs 1', 
-                'area': 0.67,
-                'mass': 22.3,
+                'name': 'Saft VL51ES 8S2P battery packs 1 "stacked"', 
+                'area': 2.01,
+                'mass': 66.9,
                 'material': Vl51es, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[-0.3, 1.168, 2.71], [45, 45, 0]], # correct Nadir center
+                'position': [[-0.3, 1.168, 3], [45, 45, 0]], # correct Nadir center (2.71)
             },
-            {   
-                'key': 30,
-                'name': 'Saft VL51ES 8S2P battery packs 2',
-                'area': 0.67,
-                'mass': 22.3,
-                'material': Vl51es, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-0.3, 1.168, 2.87], [45, 45, 0]], # correct Nadir center
-            },
-            {   
-                'key': 31,
-                'name': 'Saft VL51ES 8S2P battery packs 3',
-                'area': 0.67,
-                'mass': 22.3,
-                'material': Vl51es, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-0.3, 1.168, 3.03], [45, 45, 0]], # correct Nadir center
-            },
+            # {   
+            #     'key': 30,
+            #     'name': 'Saft VL51ES 8S2P battery packs 2',
+            #     'area': 0.67,
+            #     'mass': 22.3,
+            #     'material': Vl51es, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-0.3, 1.168, 2.87], [45, 45, 0]], # correct Nadir center
+            # },
+            # {   
+            #     'key': 31,
+            #     'name': 'Saft VL51ES 8S2P battery packs 3',
+            #     'area': 0.67,
+            #     'mass': 22.3,
+            #     'material': Vl51es, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-0.3, 1.168, 3.03], [45, 45, 0]], # correct Nadir center
+            # },
             {   
                 'key': 32,
                 'name': 'Airbus EVO PCDU 1',
-                'area': 0.875,
+                'area': 1.75,
                 'mass': 23.5,
                 'material': EvoPCDU,
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
-                'position': [[0.4, -1.168, 2.77], [45, 45, 0]], # correct Zenith center
+                'position': [[0.4, -1.168, 2.88], [45, 45, 0]], # correct Zenith center
             },
-            {   
-                'key': 33,
-                'name': 'Airbus EVO PCDU 2',
-                'area': 0.875,
-                'mass': 23.5,
-                'material': EvoPCDU, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[0.4, -1.168, 2.98], [45, 45, 0]], # correct Zenith center
-            },
+            # {   
+            #     'key': 33,
+            #     'name': 'Airbus EVO PCDU 2',
+            #     'area': 0.875,
+            #     'mass': 23.5,
+            #     'material': EvoPCDU, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[0.4, -1.168, 2.98], [45, 45, 0]], # correct Zenith center
+            # },
             {   
                 'key': 34,
-                'name': 'AMS V5718L-A10P 1',
-                'area': 0.2,
-                'mass': 1.066,
+                'name': 'AMS V5718L-A10P 1 "stacked"',
+                'area': 0.5,
+                'mass': 2.5,
                 'material': AmsV5618LA10P, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[0.1, 0, 4.45], [0, 45, 45]], # correct top panel
             },
-            {   
-                'key': 35,
-                'name': 'AMS V5718L-A10P',
-                'area': 0.2,
-                'mass': 1.066,
-                'material': AmsV5618LA10P, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-0.1, 0, 4.45], [0, 45, 45]], # correct top panel
-            },
-            {   
-                'key': 36,
-                'name': 'AMS V4118C-A01',
-                'area': 0.1,
-                'mass': 0.409,
-                'material': AmsV4118CA01, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[0, 0, 4.45], [0, 45, 45]], # correct top panel
-            },
+            # {   
+            #     'key': 35,
+            #     'name': 'AMS V5718L-A10P',
+            #     'area': 0.2,
+            #     'mass': 1.066,
+            #     'material': AmsV5618LA10P, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-0.1, 0, 4.45], [0, 45, 45]], # correct top panel
+            # },
+            # {   
+            #     'key': 36,
+            #     'name': 'AMS V4118C-A01',
+            #     'area': 0.1,
+            #     'mass': 0.409,
+            #     'material': AmsV4118CA01, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[0, 0, 4.45], [0, 45, 45]], # correct top panel
+            # },
             {   
                 'key': 37,
-                'name': 'Interpoint SMRT2805D 1',
-                'area': 0.01,
-                'mass': 0.1,
+                'name': 'Interpoint SMRT2805D 1 "stacked"',
+                'area': 0.06,
+                'mass': 0.6,
                 'material': Smrt2805D, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[0.54, 0.87, 2.66], [75, 37.76, 20.71]], # correct Nadir-north panel
             },
-            {   
-                'key': 38,
-                'name': 'Interpoint SMRT2805D 2',
-                'area': 0.01,
-                'mass': 0.1,
-                'material': Smrt2805D, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-0.54, 0.87, 2.66], [15, 37.76, 20.71]], # correct Nadir-south panel
-            },
-            {   
-                'key': 39,
-                'name': 'Interpoint SMRT2805D 3',
-                'area': 0.01,
-                'mass': 0.1,
-                'material': Smrt2805D, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-1.08, 0, 2.7], [45, 0, 45]], # correct South panel
-            },
-            {   
-                'key': 40,
-                'name': 'Interpoint SMRT2805D 4',
-                'area': 0.01,
-                'mass': 0.1,
-                'material': Smrt2805D, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-0.54, -0.87, 2.66], [75, 37.76, 20.71]], # correct Zenith-south panel
-            },
-            {   
-                'key': 41,
-                'name': 'Interpoint SMRT2805D 5',
-                'area': 0.01,
-                'mass': 0.1,
-                'material': Smrt2805D, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[0.54, -0.87, 2.66], [15, 37.76, 20.71]], # correct Zenith-north panel
-            },
-            {   
-                'key': 42,
-                'name': 'Interpoint SMRT2805D 6',
-                'area': 0.01,
-                'mass': 0.1,
-                'material': Smrt2805D, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[1.08, 0, 2.7], [45, 0, 45]], # correct North panel
-            },
+            # {   
+            #     'key': 38,
+            #     'name': 'Interpoint SMRT2805D 2',
+            #     'area': 0.01,
+            #     'mass': 0.1,
+            #     'material': Smrt2805D, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-0.54, 0.87, 2.66], [15, 37.76, 20.71]], # correct Nadir-south panel
+            # },
+            # {   
+            #     'key': 39,
+            #     'name': 'Interpoint SMRT2805D 3',
+            #     'area': 0.01,
+            #     'mass': 0.1,
+            #     'material': Smrt2805D, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-1.08, 0, 2.7], [45, 0, 45]], # correct South panel
+            # },
+            # {   
+            #     'key': 40,
+            #     'name': 'Interpoint SMRT2805D 4',
+            #     'area': 0.01,
+            #     'mass': 0.1,
+            #     'material': Smrt2805D, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-0.54, -0.87, 2.66], [75, 37.76, 20.71]], # correct Zenith-south panel
+            # },
+            # {   
+            #     'key': 41,
+            #     'name': 'Interpoint SMRT2805D 5',
+            #     'area': 0.01,
+            #     'mass': 0.1,
+            #     'material': Smrt2805D, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[0.54, -0.87, 2.66], [15, 37.76, 20.71]], # correct Zenith-north panel
+            # },
+            # {   
+            #     'key': 42,
+            #     'name': 'Interpoint SMRT2805D 6',
+            #     'area': 0.01,
+            #     'mass': 0.1,
+            #     'material': Smrt2805D, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[1.08, 0, 2.7], [45, 0, 45]], # correct North panel
+            # },
             {   
                 'key': 43,
-                'name': 'De Wit MW1000-DD24-L 1',
-                'area': 0.11,
-                'mass': 1.9,
+                'name': 'De Wit MW1000-DD24-L 1 "stacked"',
+                'area': 0.22,
+                'mass': 3.8,
                 'material': Smrt2805D, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[0, 0, 3.6], [0, 45, 45]], # correct Pressurised compartment
             },
-            {   
-                'key': 44,
-                'name': 'De Wit MW1000-DD24-L 2',
-                'area': 0.11,
-                'mass': 1.9,
-                'material': Smrt2805D, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[0, 0, 3.9], [0, 0, 45]], # correct Pressurised compartment
-            },
+            # {   
+            #     'key': 44,
+            #     'name': 'De Wit MW1000-DD24-L 2',
+            #     'area': 0.11,
+            #     'mass': 1.9,
+            #     'material': Smrt2805D, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[0, 0, 3.9], [0, 0, 45]], # correct Pressurised compartment
+            # },
             {   
                 'key': 45,
                 'name': 'North-Solar-Array Back',
@@ -606,136 +637,136 @@ node_data = [
             },
             {   
                 'key': 51,
-                'name': 'VICTS Patent Array antenna 1',
-                'area': 0.29,
-                'mass': 20,
+                'name': 'VICTS Patent Array antenna 1 "stacked"',
+                'area': 0.87,
+                'mass': 60,
                 'material': Victs, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'earth',
                 'position': [[0.57, 0.9, 1.5], [75, 37.76, 20.71]], # correct Nadir-north panel
             },
-            {   
-                'key': 52,
-                'name': 'VICTS Patent Array antenna 2',
-                'area': 0.29,
-                'mass': 20,
-                'material': Victs, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'earth',
-                'position': [[-0.57, 0.9, 1.5], [15, 37.76, 20.71]], # correct Nadir-south panel
-            },
-            {   
-                'key': 53,
-                'name': 'VICTS Patent Array antenna 3',
-                'area': 0.29,
-                'mass': 20,
-                'material': Victs, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'none',
-                'position': [[-1.2, 0, 1.5], [45, 0, 45]], # correct South panel
-            },
+            # {   
+            #     'key': 52,
+            #     'name': 'VICTS Patent Array antenna 2',
+            #     'area': 0.29,
+            #     'mass': 20,
+            #     'material': Victs, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'earth',
+            #     'position': [[-0.57, 0.9, 1.5], [15, 37.76, 20.71]], # correct Nadir-south panel
+            # },
+            # {   
+            #     'key': 53,
+            #     'name': 'VICTS Patent Array antenna 3',
+            #     'area': 0.29,
+            #     'mass': 20,
+            #     'material': Victs, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'none',
+            #     'position': [[-1.2, 0, 1.5], [45, 0, 45]], # correct South panel
+            # },
             {   
                 'key': 54,
-                'name': 'VICTS Patent Array antenna 4',
-                'area': 0.29,
-                'mass': 20,
+                'name': 'VICTS Patent Array antenna 4 "stacked"',
+                'area': 0.87,
+                'mass': 60,
                 'material': Victs, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'sun',
                 'position': [[-0.57, -0.9, 1.5], [75, 37.76, 20.71]], # correct Zenith-south panel
             },
-            {   
-                'key': 55,
-                'name': 'VICTS Patent Array antenna 5',
-                'area': 0.29,
-                'mass': 20,
-                'material': Victs, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'sun',
-                'position': [[0.57, -0.9, 1.5], [15, 37.76, 20.71]], # correct Zenith-north panel
-            },
-            {   
-                'key': 56,
-                'name': 'VICTS Patent Array antenna 6',
-                'area': 0.29,
-                'mass': 20,
-                'material': Victs, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'none',
-                'position': [[1.2, 0, 1.5], [45, 0, 45]], # correct North panel
-            },
+            # {   
+            #     'key': 55,
+            #     'name': 'VICTS Patent Array antenna 5',
+            #     'area': 0.29,
+            #     'mass': 20,
+            #     'material': Victs, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'sun',
+            #     'position': [[0.57, -0.9, 1.5], [15, 37.76, 20.71]], # correct Zenith-north panel
+            # },
+            # {   
+            #     'key': 56,
+            #     'name': 'VICTS Patent Array antenna 6',
+            #     'area': 0.29,
+            #     'mass': 20,
+            #     'material': Victs, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'none',
+            #     'position': [[1.2, 0, 1.5], [45, 0, 45]], # correct North panel
+            # },
             {   
                 'key': 57,
-                'name': 'Swift X KTRX 1',
-                'area': 0.29,
-                'mass': 0.062,
+                'name': 'Swift X KTRX 1 "stacked"',
+                'area': 1.16,
+                'mass': 0.248,
                 'material': Swift, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[0.54, 0.87, 2.8], [75, 37.76, 20.71]], # correct Nadir-north panel
             },
-            {   
-                'key': 58,
-                'name': 'Swift X KTRX 2',
-                'area': 0.29,
-                'mass': 0.062,
-                'material': Swift, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-0.54, 0.87, 2.8], [15, 37.76, 20.71]], # correct Nadir-south panel
-            },
-            {   
-                'key': 59,
-                'name': 'Swift X KTRX 3',
-                'area': 0.29,
-                'mass': 0.062,
-                'material': Swift, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-0.54, -0.87, 2.8], [75, 37.76, 20.71]], # correct Zenith-south panel
-            },
-            {   
-                'key': 60,
-                'name': 'Swift X KTRX 4',
-                'area': 0.29,
-                'mass': 0.062,
-                'material': Swift, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[0.54, -0.87, 2.8], [15, 37.76, 20.71]], # correct Zenith-north panel
-            },
+            # {   
+            #     'key': 58,
+            #     'name': 'Swift X KTRX 2',
+            #     'area': 0.29,
+            #     'mass': 0.062,
+            #     'material': Swift, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-0.54, 0.87, 2.8], [15, 37.76, 20.71]], # correct Nadir-south panel
+            # },
+            # {   
+            #     'key': 59,
+            #     'name': 'Swift X KTRX 3',
+            #     'area': 0.29,
+            #     'mass': 0.062,
+            #     'material': Swift, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-0.54, -0.87, 2.8], [75, 37.76, 20.71]], # correct Zenith-south panel
+            # },
+            # {   
+            #     'key': 60,
+            #     'name': 'Swift X KTRX 4',
+            #     'area': 0.29,
+            #     'mass': 0.062,
+            #     'material': Swift, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[0.54, -0.87, 2.8], [15, 37.76, 20.71]], # correct Zenith-north panel
+            # },
             {   
                 'key': 62,
-                'name': 'Paradigma Ka Band Transponder 1',
-                'area': 0.24,
-                'mass': 1.6,
+                'name': 'Paradigma Ka Band Transponder 1 "stacked"',
+                'area': 0.48,
+                'mass': 3.2,
                 'material': Para, 
                 'temperature': 293.15,
                 'gamma': 0,
                 'rb': 'internal',
                 'position': [[1.08, 0, 3], [45, 0, 45]], # correct North panel
             },
-            {   
-                'key': 63,
-                'name': 'Paradigma Ka Band Transponder 2',
-                'area': 0.24,
-                'mass': 1.6,
-                'material': Para, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-1.08, 0, 3], [45, 0, 45]], # correct South panel
-            },
+            # {   
+            #     'key': 63,
+            #     'name': 'Paradigma Ka Band Transponder 2',
+            #     'area': 0.24,
+            #     'mass': 1.6,
+            #     'material': Para, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-1.08, 0, 3], [45, 0, 45]], # correct South panel
+            # },
             {   
                 'key': 64,
                 'name': 'ERZ-HPA-2700-3100-43-C',
@@ -824,9 +855,6 @@ node_data = [
                 'rb': 'internal',
                 'position': [[4.287, -0.3, 2.225], [45, 45, 0]], # correct Center panel supporting components
             },
-            
-            
-
 
 ]
 
@@ -867,35 +895,35 @@ neighbor_mapping = {
     26: [(3, 0.01)], # ST400 Startracker by AAC Clyde Space 2
     # EPS Contacts
     29: [(1, 0.02), (2, 0.02), (68, 0.14)], # Saft VL51ES 8S2P battery packs 1
-    30: [(1, 0.02), (2, 0.02), (29, 0.14)], # Saft VL51ES 8S2P battery packs 2
-    31: [(1, 0.02), (2, 0.02), (30, 0.14)], # Saft VL51ES 8S2P battery packs 3
+    # 30: [(1, 0.02), (2, 0.02), (29, 0.14)], # Saft VL51ES 8S2P battery packs 2
+    # 31: [(1, 0.02), (2, 0.02), (30, 0.14)], # Saft VL51ES 8S2P battery packs 3
     32: [(4, 0.04), (5, 0.04), (68, 0.23)], # Airbus EVO PCDU 1
-    33: [(4, 0.04), (5, 0.04), (32, 0.23)], # Airbus EVO PCDU 2
+    # 33: [(4, 0.04), (5, 0.04), (32, 0.23)], # Airbus EVO PCDU 2
     37: [(1, 0.004)], # Interpoint SMRT2805D 1
-    38: [(2, 0.004)], # Interpoint SMRT2805D 2
-    39: [(3, 0.004)], # Interpoint SMRT2805D 3
-    40: [(4, 0.004)], # Interpoint SMRT2805D 4
-    41: [(5, 0.004)], # Interpoint SMRT2805D 5
-    42: [(6, 0.004)], # Interpoint SMRT2805D 6
+    # 38: [(2, 0.004)], # Interpoint SMRT2805D 2
+    # 39: [(3, 0.004)], # Interpoint SMRT2805D 3
+    #40: [(4, 0.004)], # Interpoint SMRT2805D 4
+    # 41: [(5, 0.004)], # Interpoint SMRT2805D 5
+    # 42: [(6, 0.004)], # Interpoint SMRT2805D 6
     43: [(69, 0.04)], # De Wit MW1000-DD24-L 1
-    44: [(69, 0.04)], # De Wit MW1000-DD24-L 2
+    # 44: [(69, 0.04)], # De Wit MW1000-DD24-L 2
     # Docking Contacts
     34: [(7, 0.01)], # AMS V5718L-A10P 1
-    35: [(7, 0.01)], # AMS V5718L-A10P 2
-    36: [(7, 0.01)], # AMS V4118C-A01
+    # 35: [(7, 0.01)], # AMS V5718L-A10P 2
+    # 36: [(7, 0.01)], # AMS V4118C-A01
     # Communication Contacts
     51: [(1, 0.3)], # VICTS Patent Array antenna 1
-    52: [(2, 0.3)], # VICTS Patent Array antenna 2
-    53: [(3, 0.3)], # VICTS Patent Array antenna 3
+    # 52: [(2, 0.3)], # VICTS Patent Array antenna 2
+    # 53: [(3, 0.3)], # VICTS Patent Array antenna 3
     54: [(4, 0.3)], # VICTS Patent Array antenna 4
-    55: [(5, 0.3)], # VICTS Patent Array antenna 5
-    56: [(6, 0.3)], # VICTS Patent Array antenna 6
+    # 55: [(5, 0.3)], # VICTS Patent Array antenna 5
+    # 56: [(6, 0.3)], # VICTS Patent Array antenna 6
     57: [(1, 0.1)], # Swift X KTRX 1
-    58: [(2, 0.1)], # Swift X KTRX 2
-    59: [(4, 0.1)], # Swift X KTRX 3
-    60: [(5, 0.1)], # Swift X KTRX 4
+    # 58: [(2, 0.1)], # Swift X KTRX 2
+    # 59: [(4, 0.1)], # Swift X KTRX 3
+    # 60: [(5, 0.1)], # Swift X KTRX 4
     62: [(6, 0.1)], # Paradigma Ka Band Transponder 1
-    63: [(3, 0.1)], # Paradigma Ka Band Transponder 2
+    # 63: [(3, 0.1)], # Paradigma Ka Band Transponder 2
     64: [(6, 0.1)], # ERZ-HPA-2700-3100-43-C
     65: [(6, 0.1)], # SIRIUS QUADCORE LEON4FT "stacked"
     66: [(3, 0.1)], # SIRIUS OBC "stacked"
