@@ -613,28 +613,28 @@ node_data = [
                 'rb': 'sun',
                 'position': [[-1.15, 0, 2.5], [45, 45, 0]], # correct South panel
             },
-            {   
-                'key': 49,
-                'name': 'South-Solar-Array Sandwhich',
-                'area': 0.1,
-                'mass': 1 ,
-                'material': Aluminium, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[-4.287, 0, 2.225], [45, 45, 0]], # correct
-            },
-            {   
-                'key': 50,
-                'name': 'North-Solar-Array Sandwhich',
-                'area': 0.1,
-                'mass': 1 ,
-                'material': Aluminium, 
-                'temperature': 293.15,
-                'gamma': 0,
-                'rb': 'internal',
-                'position': [[4.287, 0, 2.225], [45, 45, 0]], # correct 
-            },
+            # {   
+            #     'key': 49,
+            #     'name': 'South-Solar-Array Sandwhich',
+            #     'area': 0.1,
+            #     'mass': 1 ,
+            #     'material': Aluminium, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[-4.287, 0, 2.225], [45, 45, 0]], # correct
+            # },
+            # {   
+            #     'key': 50,
+            #     'name': 'North-Solar-Array Sandwhich',
+            #     'area': 0.1,
+            #     'mass': 1 ,
+            #     'material': Aluminium, 
+            #     'temperature': 293.15,
+            #     'gamma': 0,
+            #     'rb': 'internal',
+            #     'position': [[4.287, 0, 2.225], [45, 45, 0]], # correct 
+            # },
             {   
                 'key': 51,
                 'name': 'VICTS Patent Array antenna 1 "stacked"',
@@ -870,14 +870,14 @@ neighbor_mapping = {
     7: [(1, C.A_side_top), (2, C.A_side_top), (3, C.A_side_top), (4, C.A_side_top), (5, C.A_side_top), (6, C.A_side_top)], # Velocity
     8: [(1, C.A_side_top), (2, C.A_side_top), (3, C.A_side_top), (4, C.A_side_top), (5, C.A_side_top), (6, C.A_side_top)], # Negative-Velocity
     # Solar Array Contacts 
-    9: [(50, 1)], # North Solar Array Front
-    10: [(49, 1)], # South Solar Array Front
-    45: [(50, 1)], # North Solar Array Back
-    46: [(49, 1)], # South Solar Array Back
-    47: [(50, C.A_contact_boom), (6, C.A_contact_boom)], # North Solar Array Boom
-    48: [(49, C.A_contact_boom), (3, C.A_contact_boom)], # South Solar Array Boom
-    49: [(10, 1), (46, 1), (48, C.A_contact_boom)], # South Solar Array Sandwich
-    50: [(9, 1), (45, 1), (47, C.A_contact_boom)], # North Solar Array Sandwich
+    9: [(49, 1)], # [(50, 1)], # North Solar Array Front
+    10: [(46, 1)], # [(49, 1)], # South Solar Array Front
+    45: [(9, 1)], # [(50, 1)], # North Solar Array Back
+    46: [(10, 1)], # South Solar Array Back
+    47: [(45, C.A_contact_boom /2 ), (9, C.A_contact_boom / 2)], # [(50, C.A_contact_boom), (6, C.A_contact_boom)], # North Solar Array Boom
+    48: [(46, C.A_contact_boom /2 ), (10, C.A_contact_boom / 2)], # [(49, C.A_contact_boom), (3, C.A_contact_boom)], # South Solar Array Boom
+    # 49: [(10, 1), (46, 1), (48, C.A_contact_boom)], # South Solar Array Sandwich
+    # 50: [(9, 1), (45, 1), (47, C.A_contact_boom)], # North Solar Array Sandwich
     # Robotics Contacts
     11: [(1, 0.24)], # Vispa Nadir
     12: [(4, 0.24)], # Vispa Zenith
