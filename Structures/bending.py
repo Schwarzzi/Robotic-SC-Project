@@ -1,3 +1,5 @@
+#before coach told us this doesnt make sense , we should just use bending of the total structure
+
 import numpy as np
 
 a = 2*9.81
