@@ -4,6 +4,7 @@ A module for the thermal model.
 
 from multiprocessing import Pool
 import numpy as np
+from numba import njit
 from tqdm import tqdm
 from scipy.integrate import solve_ivp, dblquad
 from constants import Constants as C
@@ -862,7 +863,23 @@ class ThermalModel:
                 distance_matrix[i, j] = np.linalg.norm(node_i.position[0] - neighbor_node.position[0])
         
         return distance_matrix
+    
+    # @njit
+    def compute_external_flux(self, h: float, beta: float, t: float) -> np.ndarray:
+        """
+        Calculate the external heat flux on each node.
 
+        Parameters:
+            h (float): Altitude.
+            beta (float): Angle between orbit and equator in degrees.
+            t (float): Time.
+
+        Returns:
+            numpy.ndarray: Array of external heat flux on each node.
+        """
+        return ExternalHeatFlux(self.nodes, h, beta, t).total_flux()
+
+    # @njit(parallel=True, fastmath=True)
     def heat_balance(self, h: float, beta: float, t: float) -> np.ndarray:
         """
         Calculate the rate of change of temperature for each node in the thermal model.
@@ -876,6 +893,8 @@ class ThermalModel:
             dT_dt (numpy.ndarray): Array of the rate of change of temperature for each node.
         """
         thermal_control = False
+        sigma = sigma = 5.67e-8 # for Numba
+        T_space = 2.7 # for Numba
 
         node_indices = {node_key: idx for idx, node_key in enumerate(self.nodes.keys())}
 
@@ -894,22 +913,26 @@ class ThermalModel:
                     temperature_differences[i, j] = temperatures[j] - temperatures[i]
 
         with np.errstate(divide='ignore', invalid='ignore'):
-            heat_transfer_matrix = np.where(self.l_matrix != 0, self.k_matrix * temperature_differences * self.a_matrix / self.l_matrix, 0)
+            # heat_transfer_matrix = np.where(self.l_matrix != 0, self.k_matrix * temperature_differences * self.a_matrix, 0) #/ self.l_matrix, 0)
+            heat_transfer_matrix = np.where(self.l_matrix != 0, self.k_matrix * temperature_differences * self.a_matrix / self.l_matrix, 0) 
 
         q_internal_conducted = np.sum(heat_transfer_matrix, axis=1)
+        # heat_transfer_matrix = self.k_matrix * temperature_differences * self.a_matrix
+        # q_internal_conducted = np.sum(heat_transfer_matrix, axis=1)
 
         temp_diff = temperatures[:, np.newaxis] ** 4 - temperatures[np.newaxis, :] ** 4
         # Update q_internal_radiated to use the new emissivities from MLI where applicable
-        q_internal_radiated = np.sum(emissivities[:, np.newaxis] * C.sigma * temp_diff * areas[:, np.newaxis] * self.vf_matrix, axis=1)
+        q_internal_radiated = np.zeros_like(q_internal_conducted)
+        # q_internal_radiated = np.sum(emissivities[:, np.newaxis] * sigma * temp_diff * areas[:, np.newaxis] * self.vf_matrix, axis=1)
 
         radiating_bodies = np.array([node.radiating_body for node in self.nodes.values()])
         is_radiating = np.isin(radiating_bodies, ['earth', 'sun'])
         # Update q_radiated to use the new emissivities from MLI where applicable
-        q_radiated = np.where(is_radiating, emissivities * C.sigma * areas * (temperatures ** 4 - C.T_space ** 4), 0)
+        q_radiated = np.where(is_radiating, emissivities * sigma * areas * (temperatures ** 4 - T_space ** 4), 0)
 
         q_generated = np.array([node.heat_flux_int for node in self.nodes.values()])
         
-        external_heat_flux = ExternalHeatFlux(self.nodes, h, beta, t).total_flux()
+        external_heat_flux = self.compute_external_flux(h, beta, t)
 
         q_external = np.where(is_radiating, external_heat_flux, 0)
 
