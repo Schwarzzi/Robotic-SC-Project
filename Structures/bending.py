@@ -3,7 +3,7 @@
 import numpy as np
 
 a = 2*9.81
-m = 3000
+m = 4700
 F_DL = m*a
 sf = 1.25*1.1
 F_DL = F_DL*sf
@@ -29,4 +29,4 @@ print(EIV_max)
 Ireq = EIV_max / (E*max_d)
 print(f"required moment of inertia: {Ireq*10**12}")
 
-#testing
+#less than Imm of whole structure, so verified
